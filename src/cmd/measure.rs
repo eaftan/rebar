@@ -1,7 +1,10 @@
 use std::{
     io::{BufReader, Read},
     path::PathBuf,
-    sync::Arc,
+    sync::{
+        atomic::{AtomicUsize, Ordering},
+        Arc, OnceLock,
+    },
     time::{Duration, Instant},
 };
 
@@ -72,6 +75,9 @@ being able to see the full error messages if anything goes wrong.
         "Kill a benchmark if it exceeds this.",
         r#"
 Attempts to kill a benchmark if it exceeds this duration.
+
+Rebar terminates the runner's entire process tree so that runners backed by
+child processes do not leave work behind or retain Rebar's output pipes.
 
 This is set by default to twice the combined time of --max-time and
 --max-warmup-time.
@@ -193,13 +199,18 @@ pub fn run(p: &mut lexopt::Parser) -> anyhow::Result<()> {
         wtr.flush()?;
         return Ok(());
     }
+    install_interrupt_handler()
+        .context("failed to install interrupt handler")?;
+    let _interrupt_guard = InterruptExitGuard;
     // Or if we just want to check that every benchmark runs correctly, do
     // that. We spit out any error we find.
     if config.verify {
         let mut errored = false;
         let mut wtr = csv::Writer::from_writer(std::io::stdout());
         for b in exec_benchmarks.iter() {
+            exit_if_interrupted();
             let agg = b.aggregate(b.verifier().collect(config.verbose));
+            exit_if_interrupted();
             if let Some(err) = agg.err {
                 errored = true;
                 wtr.write_record(&[
@@ -219,6 +230,7 @@ pub fn run(p: &mut lexopt::Parser) -> anyhow::Result<()> {
                 ])?;
             }
             wtr.flush()?;
+            exit_if_interrupted();
         }
         anyhow::ensure!(!errored, "some benchmarks failed");
         return Ok(());
@@ -226,10 +238,12 @@ pub fn run(p: &mut lexopt::Parser) -> anyhow::Result<()> {
     // Run our benchmarks and emit the results of each as a single CSV record.
     let mut wtr = csv::Writer::from_writer(std::io::stdout());
     for b in exec_benchmarks.iter() {
+        exit_if_interrupted();
         // Run the benchmark, collect the samples and turn the samples into a
         // collection of various aggregate statistics (mean+/-stddev, median,
         // min, max).
         let agg = b.aggregate(b.collect(config.verbose));
+        exit_if_interrupted();
         // Our aggregate is initially captured in terms of how long it takes to
         // execute each iteration of the benchmark. But for searching, this is
         // not particularly intuitive. Instead, we convert strict timings into
@@ -250,6 +264,7 @@ pub fn run(p: &mut lexopt::Parser) -> anyhow::Result<()> {
         // Flush every record once we have it so that users can see that
         // progress is being made.
         wtr.flush()?;
+        exit_if_interrupted();
     }
     Ok(())
 }
@@ -504,6 +519,12 @@ impl ExecBenchmark {
             self.config.max_warmup_time.as_nanos(),
             cmd,
         );
+        exit_if_interrupted();
+        let mut cmd = process_wrap::std::CommandWrap::from(cmd);
+        #[cfg(unix)]
+        cmd.wrap(process_wrap::std::ProcessGroup::leader());
+        #[cfg(windows)]
+        cmd.wrap(process_wrap::std::JobObject);
         let spawn_start = Instant::now();
         let mut child = cmd.spawn().context("failed to spawn process")?;
 
@@ -527,7 +548,7 @@ impl ExecBenchmark {
                 max_time: self.config.max_time,
                 max_warmup_time: self.config.max_warmup_time,
             };
-            let mut stdin = child.stdin.take().unwrap();
+            let mut stdin = child.stdin().take().unwrap();
             std::thread::spawn(move || -> anyhow::Result<()> {
                 klvbench
                     .write(&mut stdin)
@@ -536,7 +557,7 @@ impl ExecBenchmark {
             })
         };
         let handle_stdout = {
-            let mut stdout = child.stdout.take().unwrap();
+            let mut stdout = child.stdout().take().unwrap();
             std::thread::spawn(move || -> anyhow::Result<Vec<u8>> {
                 let mut buf = vec![];
                 stdout
@@ -554,7 +575,7 @@ impl ExecBenchmark {
         let handle_stderr = if verbose {
             None
         } else {
-            let mut stderr = BufReader::new(child.stderr.take().unwrap());
+            let mut stderr = BufReader::new(child.stderr().take().unwrap());
             Some(std::thread::spawn(move || -> anyhow::Result<Vec<u8>> {
                 let mut buf = vec![];
                 stderr
@@ -572,42 +593,54 @@ impl ExecBenchmark {
         // different environments execute things more slowly. This is also
         // useful during experimentation, where you might not know how long a
         // regex will take.
-        let status = loop {
-            let maybe_status =
-                child.try_wait().context("failed to reap process")?;
-            if let Some(status) = maybe_status {
-                break status;
+        let mut timed_out = false;
+        let mut status = None;
+        loop {
+            if interrupted() {
+                terminate_process_tree(&mut *child)
+                    .context("failed to kill interrupted process tree")?;
+                exit_if_interrupted();
+            }
+            if status.is_none() {
+                status = child.try_wait().context("failed to reap process")?;
+            }
+            let stderr_finished = handle_stderr
+                .as_ref()
+                .map_or(true, std::thread::JoinHandle::is_finished);
+            if status.is_some()
+                && handle_stdin.is_finished()
+                && handle_stdout.is_finished()
+                && stderr_finished
+            {
+                break;
             }
             if spawn_start.elapsed() > self.config.timeout {
                 log::debug!(
-                    "benchmark time exceeded {:?}, killing process",
+                    "benchmark time exceeded {:?}, killing process tree",
                     self.config.timeout,
                 );
-                if let Err(err) = child.kill() {
-                    log::debug!(
-                        "failed to kill command {:?} because {}",
-                        cmd,
-                        err,
-                    );
-                } else {
-                    log::debug!("successfully killed {:?}", cmd);
-                    log::debug!("reaping...");
-                    match child.wait() {
-                        Ok(status) => {
-                            log::debug!(
-                                "reap successful, exit status: {:?}",
-                                status
-                            );
-                        }
-                        Err(err) => {
-                            log::debug!("reap failed: {}", err);
-                        }
-                    }
+                terminate_process_tree(&mut *child).with_context(|| {
+                    format!(
+                        "timeout after {:?}; failed to kill process tree",
+                        self.config.timeout,
+                    )
+                })?;
+                timed_out = true;
+                if status.is_none() {
+                    status = Some(child.wait().context(
+                        "failed to reap process after killing timed out process tree",
+                    )?);
                 }
-                anyhow::bail!("timeout: exceeded {:?}", self.config.timeout);
+                break;
             }
             std::thread::sleep(Duration::from_millis(50));
-        };
+        }
+        if timed_out {
+            // A descendant can deliberately escape the runner's process group
+            // while retaining one of its pipes. Do not let such a process turn
+            // a timeout into an unbounded wait for a pipe-reading thread.
+            anyhow::bail!("timeout: exceeded {:?}", self.config.timeout);
+        }
         // We wait to handle any errors from writing to stdin until we've dealt
         // with stderr, since stderr is likely to contain the actual error that
         // occurred. That is, if writing to stdin failed, then it's likely
@@ -616,10 +649,12 @@ impl ExecBenchmark {
         // of the threads to make sure they've completed.
         let result_stdin = handle_stdin.join().unwrap();
         let result_stdout = handle_stdout.join().unwrap();
-        let stderr = match handle_stderr {
-            None => vec![],
-            Some(handle) => handle.join().unwrap()?,
+        let result_stderr = match handle_stderr {
+            None => Ok(vec![]),
+            Some(handle) => handle.join().unwrap(),
         };
+        let status = status.expect("runner status must be collected");
+        let stderr = result_stderr?;
         if !status.success() {
             if verbose {
                 anyhow::bail!(
@@ -736,6 +771,136 @@ impl ExecBenchmark {
             engine: self.engine.clone(),
         }
     }
+}
+
+static INTERRUPT_SIGNAL: OnceLock<Arc<AtomicUsize>> = OnceLock::new();
+
+fn install_interrupt_handler() -> anyhow::Result<()> {
+    static INSTALLED: OnceLock<Result<(), String>> = OnceLock::new();
+    match INSTALLED.get_or_init(|| install_interrupt_handler_once()) {
+        Ok(()) => Ok(()),
+        Err(err) => anyhow::bail!("could not install Ctrl-C handler: {err}"),
+    }
+}
+
+#[cfg(unix)]
+fn install_interrupt_handler_once() -> Result<(), String> {
+    let signal_flag =
+        INTERRUPT_SIGNAL.get_or_init(|| Arc::new(AtomicUsize::new(0)));
+    for signal in [
+        signal_hook::consts::SIGINT,
+        signal_hook::consts::SIGTERM,
+        signal_hook::consts::SIGHUP,
+        signal_hook::consts::SIGQUIT,
+    ] {
+        signal_hook::flag::register_usize(
+            signal,
+            Arc::clone(signal_flag),
+            signal as usize,
+        )
+        .map_err(|err| err.to_string())?;
+    }
+    Ok(())
+}
+
+#[cfg(windows)]
+fn install_interrupt_handler_once() -> Result<(), String> {
+    let signal = Arc::clone(
+        INTERRUPT_SIGNAL.get_or_init(|| Arc::new(AtomicUsize::new(0))),
+    );
+    ctrlc::set_handler(move || signal.store(2, Ordering::Release))
+        .map_err(|err| err.to_string())
+}
+
+#[cfg(not(any(unix, windows)))]
+fn install_interrupt_handler_once() -> Result<(), String> {
+    Ok(())
+}
+
+fn interrupted() -> bool {
+    INTERRUPT_SIGNAL
+        .get()
+        .is_some_and(|signal| signal.load(Ordering::Acquire) != 0)
+}
+
+fn exit_if_interrupted() {
+    let Some(signal) = INTERRUPT_SIGNAL
+        .get()
+        .map(|signal| signal.load(Ordering::Acquire))
+        .filter(|&signal| signal != 0)
+    else {
+        return;
+    };
+    #[cfg(unix)]
+    std::process::exit(128 + signal as i32);
+    #[cfg(not(unix))]
+    {
+        let _ = signal;
+        std::process::exit(130);
+    }
+}
+
+struct InterruptExitGuard;
+
+impl Drop for InterruptExitGuard {
+    fn drop(&mut self) {
+        exit_if_interrupted();
+    }
+}
+
+fn terminate_process_tree(
+    child: &mut dyn process_wrap::std::ChildWrapper,
+) -> std::io::Result<()> {
+    #[cfg(unix)]
+    {
+        if let Err(err) =
+            signal_process_tree(child, signal_hook::consts::SIGTERM)
+        {
+            if !ignorable_termination_error(&err) {
+                return Err(err);
+            }
+        }
+        std::thread::sleep(Duration::from_millis(250));
+    }
+    if let Err(err) = force_kill_process_tree(child) {
+        if !ignorable_termination_error(&err) {
+            return Err(err);
+        }
+    }
+    Ok(())
+}
+
+#[cfg(unix)]
+fn signal_process_tree(
+    child: &mut dyn process_wrap::std::ChildWrapper,
+    signal: i32,
+) -> std::io::Result<()> {
+    match child.signal(signal) {
+        Err(err) if err.kind() == std::io::ErrorKind::PermissionDenied => {
+            let _ = child.try_wait()?;
+            child.signal(signal)
+        }
+        result => result,
+    }
+}
+
+fn force_kill_process_tree(
+    child: &mut dyn process_wrap::std::ChildWrapper,
+) -> std::io::Result<()> {
+    match child.start_kill() {
+        Err(err) if err.kind() == std::io::ErrorKind::PermissionDenied => {
+            let _ = child.try_wait()?;
+            child.start_kill()
+        }
+        result => result,
+    }
+}
+
+fn ignorable_termination_error(err: &std::io::Error) -> bool {
+    matches!(
+        err.kind(),
+        std::io::ErrorKind::NotFound | std::io::ErrorKind::InvalidInput
+    ) || err.raw_os_error() == Some(3)
 }
 
 /// The raw results generated by running a benchmark.
@@ -877,4 +1042,132 @@ fn max(xs: &[f64]) -> Option<f64> {
         }
     }
     Some(max)
+}
+
+#[cfg(test)]
+mod tests {
+    #[cfg(unix)]
+    const INTERRUPT_HELPER_ENV: &str = "REBAR_PROCESS_TREE_INTERRUPT_HELPER";
+
+    #[cfg(unix)]
+    #[test]
+    fn process_tree_isolated_and_killed_as_a_group() {
+        use std::io::BufRead;
+        use std::process::{Command, Stdio};
+        use std::time::Duration;
+
+        let mut command = Command::new("sh");
+        command
+            .args(["-c", "sleep 30 & echo $!; wait"])
+            .stdout(Stdio::piped());
+        let mut command = process_wrap::std::CommandWrap::from(command);
+        command.wrap(process_wrap::std::ProcessGroup::leader());
+        let mut child = command.spawn().unwrap();
+        let process_group = i32::try_from(child.id()).unwrap();
+
+        let mut descendant = String::new();
+        std::io::BufReader::new(child.stdout().take().unwrap())
+            .read_line(&mut descendant)
+            .unwrap();
+        let descendant = descendant.trim().parse::<i32>().unwrap();
+        assert_eq!(unsafe { libc::getpgid(descendant) }, process_group);
+
+        super::terminate_process_tree(&mut *child).unwrap();
+        child.wait().unwrap();
+        for _ in 0..100 {
+            if unsafe { libc::kill(descendant, 0) } != 0 {
+                return;
+            }
+            std::thread::sleep(Duration::from_millis(10));
+        }
+        panic!("descendant process survived process-group termination");
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn process_tree_killed_after_group_leader_exits() {
+        use std::io::BufRead;
+        use std::process::{Command, Stdio};
+        use std::time::Duration;
+
+        let mut command = Command::new("sh");
+        command.args(["-c", "sleep 30 & echo $!"]).stdout(Stdio::piped());
+        let mut command = process_wrap::std::CommandWrap::from(command);
+        command.wrap(process_wrap::std::ProcessGroup::leader());
+        let mut child = command.spawn().unwrap();
+
+        let mut descendant = String::new();
+        std::io::BufReader::new(child.stdout().take().unwrap())
+            .read_line(&mut descendant)
+            .unwrap();
+        let descendant = descendant.trim().parse::<i32>().unwrap();
+        assert!(child.wait().unwrap().success());
+        assert_eq!(unsafe { libc::getpgid(descendant) }, child.id() as i32);
+
+        super::terminate_process_tree(&mut *child).unwrap();
+        for _ in 0..100 {
+            if unsafe { libc::kill(descendant, 0) } != 0 {
+                return;
+            }
+            std::thread::sleep(Duration::from_millis(10));
+        }
+        panic!("descendant process survived process-group termination");
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn process_tree_cleaned_up_on_interrupt() {
+        use std::io::{BufRead, Write};
+        use std::process::{Command, Stdio};
+        use std::time::Duration;
+
+        if std::env::var_os(INTERRUPT_HELPER_ENV).is_some() {
+            let mut command = Command::new("sh");
+            command
+                .args(["-c", "sleep 30 & wait"])
+                .stdout(Stdio::null())
+                .stderr(Stdio::null());
+            super::install_interrupt_handler().unwrap();
+            let mut command = process_wrap::std::CommandWrap::from(command);
+            command.wrap(process_wrap::std::ProcessGroup::leader());
+            let mut child = command.spawn().unwrap();
+            println!("PROCESS_GROUP={}", child.id());
+            std::io::stdout().flush().unwrap();
+            loop {
+                if super::interrupted() {
+                    super::terminate_process_tree(&mut *child).unwrap();
+                    std::process::exit(130);
+                }
+                std::thread::sleep(Duration::from_millis(10));
+            }
+        }
+
+        let test_name =
+            "cmd::measure::tests::process_tree_cleaned_up_on_interrupt";
+        let mut helper = Command::new(std::env::current_exe().unwrap())
+            .args(["--exact", test_name, "--nocapture"])
+            .env(INTERRUPT_HELPER_ENV, "1")
+            .stdout(Stdio::piped())
+            .spawn()
+            .unwrap();
+        let mut output =
+            std::io::BufReader::new(helper.stdout.take().unwrap());
+        let process_group = loop {
+            let mut line = String::new();
+            assert_ne!(output.read_line(&mut line).unwrap(), 0);
+            if let Some(value) = line.trim().strip_prefix("PROCESS_GROUP=") {
+                break value.parse::<i32>().unwrap();
+            }
+        };
+
+        assert_eq!(unsafe { libc::kill(helper.id() as i32, libc::SIGINT) }, 0);
+        assert_eq!(helper.wait().unwrap().code(), Some(130));
+        for _ in 0..100 {
+            if unsafe { libc::kill(-process_group, 0) } != 0 {
+                return;
+            }
+            std::thread::sleep(Duration::from_millis(10));
+        }
+        panic!("descendant process survived parent interruption");
+    }
 }

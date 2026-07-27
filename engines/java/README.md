@@ -51,6 +51,9 @@ existing runner protocol and makes Rebar's median of that one sample equal to
 the JMH score within the protocol's integer-nanosecond precision. The
 verification count is computed separately, outside the measured JMH forks.
 
+If Rebar's timeout expires, it terminates the JMH controller and its fork JVMs
+as one process tree.
+
 ## Prerequisites and JDK selection
 
 The Java adapter is a Maven project. Maven and a JDK are optional Rebar engine

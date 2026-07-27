@@ -55,6 +55,12 @@ csv = "1.2.0"
 env_logger = { version = "0.11.10", default-features = false, features = ["auto-color", "humantime"] }
 lexopt = "0.3.0"
 log = "0.4.14"
+process-wrap = { version = "9.1.0", default-features = false, features = [
+  "creation-flags",
+  "job-object",
+  "process-group",
+  "std",
+] }
 regex-lite = "0.1.0"
 serde = { version = "1.0.137", features = ["derive"] }
 tabwriter = { version = "1.2.1", features = ["ansi_formatting"] }
@@ -64,12 +70,21 @@ toml = "1.1.0"
 unicode-width = "0.2.2"
 walkdir = "2.3.2"
 
+[target.'cfg(unix)'.dependencies]
+signal-hook = { version = "0.4.4", default-features = false }
+
+[target.'cfg(windows)'.dependencies]
+ctrlc = "3.5.2"
+
 [dependencies.klv]
 path = "shared/klv"
 [dependencies.regexredux]
 path = "shared/regexredux"
 [dependencies.timer]
 path = "shared/timer"
+
+[dev-dependencies]
+libc = "0.2"
 
 [profile.release]
 debug = true
