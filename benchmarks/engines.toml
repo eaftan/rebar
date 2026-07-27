@@ -367,19 +367,23 @@
   cwd = "../engines/java"
   [engine.version]
     bin = "java"
-    args = ["Main", "version"]
-    # We specifically require a mention of 'HotSpot' to avoid accidentally
-    # benchmarking something other than what we advertise.
-    regex = '^Java HotSpot.*VM (?P<version>.*)'
+    args = ["-jar", "target/rebar-java.jar", "version"]
+    # HotSpot identifies itself with either a 'Java HotSpot' or 'OpenJDK'
+    # prefix, depending on the distribution. This still excludes OpenJ9.
+    regex = '^(?:Java HotSpot|OpenJDK).*VM (?P<version>.*)'
   [engine.run]
     bin = "java"
-    args = ["Main"]
+    args = ["-jar", "target/rebar-java.jar"]
+  [[engine.dependency]]
+    bin = "mvn"
+    args = ["--version"]
+    regex = '(?m)^Apache Maven '
   [[engine.build]]
-    bin = "javac"
-    args = ["Main.java"]
+    bin = "mvn"
+    args = ["package", "--quiet", "--batch-mode", "--no-transfer-progress"]
   [[engine.clean]]
-    bin = "sh"
-    args = ["-c", "rm -f *.class"]
+    bin = "mvn"
+    args = ["clean", "--quiet", "--batch-mode", "--no-transfer-progress"]
 
 # Javascript's regex engine from v8.
 #
