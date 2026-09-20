@@ -53,7 +53,8 @@ engines = [
   'rust/regex/onepass',
   'rust/regex/pikevm',
   'rust/regexold',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 analysis = '''
 This benchmark just tries to extract some properties of a subset of functions
@@ -87,7 +88,8 @@ engines = [
   'rust/regex/onepass',
   'rust/regex/pikevm',
   'rust/regexold',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 analysis = '''
 This benchmark looks for the first three "words" in each line, and captures
@@ -110,7 +112,8 @@ engines = [
   'rust/regex/onepass',
   'rust/regex/pikevm',
   'rust/regexold',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 analysis = '''
 This is the same as `first-three-words-english`, but enables Unicode and runs
@@ -155,7 +158,8 @@ engines = [
   'rust/regex/onepass',
   'rust/regex/pikevm',
   'rust/regexold',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 analysis = '''
 This is the same as the English counterpart, but enables Unicode mode and thus

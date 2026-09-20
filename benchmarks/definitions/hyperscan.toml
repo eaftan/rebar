@@ -17,7 +17,8 @@ engines = [
   'hyperscan',
   'rust/regex',
   'rust/regexold',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 
 [[bench]]
@@ -30,7 +31,8 @@ engines = [
   'hyperscan',
   'rust/regex',
   'rust/regexold',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 
 [[bench]]
@@ -44,7 +46,8 @@ engines = [
   'hyperscan',
   'rust/regex',
   'rust/regexold',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 
 [[bench]]
@@ -58,7 +61,8 @@ engines = [
   'hyperscan',
   'rust/regex',
   'rust/regexold',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 
 [[bench]]
@@ -72,7 +76,8 @@ engines = [
   'hyperscan',
   'rust/regex',
   'rust/regexold',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 
 [[bench]]
@@ -100,7 +105,8 @@ engines = [
   'hyperscan',
   'rust/regex',
   'rust/regexold',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 
 [[bench]]
@@ -127,7 +133,8 @@ engines = [
   'hyperscan',
   'rust/regex',
   'rust/regexold',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 
 [[bench]]
@@ -140,7 +147,8 @@ engines = [
   'hyperscan',
   'rust/regex',
   'rust/regexold',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 
 # The 'literal-inner' benchmarks test how Hyperscan does with a literal that is
@@ -157,7 +165,8 @@ engines = [
   'hyperscan',
   'rust/regex',
   'rust/regexold',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 
 [[bench]]
@@ -170,7 +179,8 @@ engines = [
   'hyperscan',
   'rust/regex',
   'rust/regexold',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 
 # The 'fixed-length-words' benchmarks are specifically designed to omit any
@@ -185,7 +195,8 @@ engines = [
   'hyperscan',
   'rust/regex',
   'rust/regexold',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 
 [[bench]]
@@ -198,7 +209,8 @@ engines = [
   'hyperscan',
   'rust/regex',
   'rust/regexold',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 
 # This one enables Unicode mode, which slows Hyperscan down quite a bit.
@@ -216,5 +228,6 @@ engines = [
   'hyperscan',
   'rust/regex',
   'rust/regexold',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]

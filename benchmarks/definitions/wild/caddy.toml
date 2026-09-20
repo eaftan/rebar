@@ -18,5 +18,6 @@ engines = [
   'pcre2',
   'python/re',
   'python/regex',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]

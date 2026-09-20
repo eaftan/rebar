@@ -36,5 +36,6 @@ engines = [
   're2',
   'rust/regex',
   'rust/regexold',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]

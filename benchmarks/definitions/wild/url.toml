@@ -48,7 +48,8 @@ engines = [
   're2',
   'rust/regex',
   'rust/regexold',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 analysis = '''
 Benchmarking the search is quite interesting for the regex crate. It starts

@@ -18,6 +18,7 @@ import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.openjdk.jmh.runner.options.TimeValue;
 import org.safere.Pattern;
+import org.safere.Utf8Input;
 
 public final class Main {
   private record Sample(long duration, int count) {}
@@ -25,25 +26,37 @@ public final class Main {
   private Main() {}
 
   public static void main(String... args) throws Exception {
-    if (args.length == 1 && args[0].equals("version")) {
+    if (args.length < 1 || args.length > 2) {
+      throw new IllegalArgumentException("usage: Main <string|utf8> [version]");
+    }
+    InputMode mode = InputMode.parse(args[0]);
+    if (args.length == 2 && args[1].equals("version")) {
       printVersion();
       return;
     }
+    if (args.length != 1) {
+      throw new IllegalArgumentException("usage: Main <string|utf8> [version]");
+    }
 
     byte[] raw = System.in.readAllBytes();
-    BenchmarkConfig config = BenchmarkConfig.parse(raw);
+    BenchmarkConfig config = BenchmarkConfig.parse(raw, mode);
     if (config.model().equals("compile")) {
+      Utf8Input utf8Input =
+          mode == InputMode.UTF8 ? Utf8Input.validated(config.haystackBytes()) : null;
       for (Sample sample :
           sampleDirect(
               config,
               config::compileRegex,
-              pattern -> Workloads.countMatches(pattern, config.haystack()))) {
+              pattern ->
+                  mode == InputMode.UTF8
+                      ? Utf8Workloads.countMatches(pattern, utf8Input)
+                      : Workloads.countMatches(pattern, config.haystack()))) {
         System.out.printf("%d,%d%n", sample.duration(), sample.count());
       }
       return;
     }
 
-    Workloads.IntWorkload workload = Workloads.create(config);
+    Workloads.IntWorkload workload = Workloads.create(config, mode);
     // Rebar's --test runs one operation to check its count. Starting a JMH fork
     // for every correctness check adds no useful measurement information.
     if (config.maxTime() == 0 && config.maxWarmupTime() == 0) {
@@ -53,7 +66,7 @@ public final class Main {
       return;
     }
     int count = workload.run();
-    runJmh(raw, config, count);
+    runJmh(raw, config, mode, count);
   }
 
   private static void printVersion() throws Exception {
@@ -74,7 +87,8 @@ public final class Main {
         version, System.getProperty("java.vm.name"), System.getProperty("java.vm.version"));
   }
 
-  private static void runJmh(byte[] raw, BenchmarkConfig config, int count) throws Exception {
+  private static void runJmh(byte[] raw, BenchmarkConfig config, InputMode mode, int count)
+      throws Exception {
     Path input = Files.createTempFile("rebar-safere-", ".klv");
     Path output = Files.createTempFile("rebar-safere-jmh-", ".log");
     try {
@@ -97,7 +111,10 @@ public final class Main {
               .warmupTime(TimeValue.nanoseconds(warmupNs))
               .measurementIterations(measurementIterations)
               .measurementTime(TimeValue.nanoseconds(measurementNs))
-              .jvmArgsAppend("-Drebar.safere.input=" + input, "-Drebar.safere.count=" + count)
+              .jvmArgsAppend(
+                  "-Drebar.safere.input=" + input,
+                  "-Drebar.safere.mode=" + mode.argument(),
+                  "-Drebar.safere.count=" + count)
               .output(output.toString())
               .build();
       var results = new Runner(options).run();

@@ -76,7 +76,8 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 
 [[bench]]
@@ -91,7 +92,8 @@ engines = [
   'python/regex',
   'rust/regex',
   'rust/regexold',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 
 [[bench]]
@@ -110,7 +112,8 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 analysis = '''
 This is the "optimized" variant of the regex as posted in the GitHub issue
@@ -133,7 +136,8 @@ engines = [
   'python/regex',
   'rust/regex',
   'rust/regexold',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 analysis = '''
 Same as `opt-ascii`, but with Unicode mode enabled.

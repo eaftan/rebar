@@ -93,7 +93,8 @@ engines = [
   'rust/regex',
   'rust/regexold',
   'rust/regex/pikevm',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 analysis = '''
 This benchmark compares the new NFA compiler with the old one, where the
@@ -143,7 +144,8 @@ engines = [
   'rust/regex',
   'rust/regexold',
   'rust/regex/pikevm',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 analysis = '''
 This is like the byte oriented benchmark above, except it tweaks the regex to

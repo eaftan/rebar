@@ -34,7 +34,8 @@ engines = [
   'rust/regex',
   'rust/regex/lite',
   'rust/regexold',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 
 [[bench]]
@@ -70,7 +71,8 @@ engines = [
   'rust/regex',
   'rust/regex/lite',
   'rust/regexold',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 
 [[bench]]
@@ -106,7 +108,8 @@ engines = [
   'rust/regex',
   'rust/regex/lite',
   'rust/regexold',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 analysis = '''
 Looks for occurrences of `Holmes` and the words surrounding them while

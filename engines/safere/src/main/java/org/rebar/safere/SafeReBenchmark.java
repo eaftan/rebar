@@ -17,7 +17,9 @@ public class SafeReBenchmark {
     if (input == null) {
       throw new IllegalStateException("missing rebar.safere.input");
     }
-    workload = Workloads.create(BenchmarkConfig.parse(Files.readAllBytes(Path.of(input))));
+    InputMode mode = InputMode.parse(System.getProperty("rebar.safere.mode"));
+    workload =
+        Workloads.create(BenchmarkConfig.parse(Files.readAllBytes(Path.of(input)), mode), mode);
     int expected = Integer.parseInt(System.getProperty("rebar.safere.count"));
     int actual = workload.run();
     if (actual != expected) {

@@ -5,20 +5,73 @@ import java.nio.charset.CharacterCodingException;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import org.safere.Pattern;
 
-record BenchmarkConfig(
-    String model,
-    String pattern,
-    boolean caseInsensitive,
-    boolean unicode,
-    String haystack,
-    int maxIters,
-    int maxWarmupIters,
-    long maxTime,
-    long maxWarmupTime) {
+final class BenchmarkConfig {
+  private final String model;
+  private final String pattern;
+  private final boolean caseInsensitive;
+  private final boolean unicode;
+  private final String haystack;
+  private final byte[] haystackBytes;
+  private final int maxIters;
+  private final int maxWarmupIters;
+  private final long maxTime;
+  private final long maxWarmupTime;
 
-  static BenchmarkConfig parse(byte[] input) throws CharacterCodingException {
+  private BenchmarkConfig(
+      String model,
+      String pattern,
+      boolean caseInsensitive,
+      boolean unicode,
+      String haystack,
+      byte[] haystackBytes,
+      int maxIters,
+      int maxWarmupIters,
+      long maxTime,
+      long maxWarmupTime) {
+    this.model = model;
+    this.pattern = pattern;
+    this.caseInsensitive = caseInsensitive;
+    this.unicode = unicode;
+    this.haystack = haystack;
+    this.haystackBytes = haystackBytes;
+    this.maxIters = maxIters;
+    this.maxWarmupIters = maxWarmupIters;
+    this.maxTime = maxTime;
+    this.maxWarmupTime = maxWarmupTime;
+  }
+
+  String model() {
+    return model;
+  }
+
+  String haystack() {
+    return haystack;
+  }
+
+  byte[] haystackBytes() {
+    return haystackBytes;
+  }
+
+  int maxIters() {
+    return maxIters;
+  }
+
+  int maxWarmupIters() {
+    return maxWarmupIters;
+  }
+
+  long maxTime() {
+    return maxTime;
+  }
+
+  long maxWarmupTime() {
+    return maxWarmupTime;
+  }
+
+  static BenchmarkConfig parse(byte[] input, InputMode mode) throws CharacterCodingException {
     CharsetDecoder decoder =
         StandardCharsets.UTF_8
             .newDecoder()
@@ -27,6 +80,7 @@ record BenchmarkConfig(
     String model = null;
     String pattern = null;
     String haystack = null;
+    byte[] haystackBytes = null;
     boolean caseInsensitive = false;
     boolean unicode = false;
     int maxIters = 0;
@@ -40,15 +94,20 @@ record BenchmarkConfig(
       switch (entry.key()) {
         // Rebar uses the name to identify the result outside this process.
         case "name" -> {}
-        case "model" -> model = entry.value();
-        case "pattern" -> pattern = entry.value();
-        case "case-insensitive" -> caseInsensitive = entry.value().equals("true");
-        case "unicode" -> unicode = entry.value().equals("true");
-        case "haystack" -> haystack = entry.value();
-        case "max-iters" -> maxIters = Integer.parseInt(entry.value());
-        case "max-warmup-iters" -> maxWarmupIters = Integer.parseInt(entry.value());
-        case "max-time" -> maxTime = Long.parseLong(entry.value());
-        case "max-warmup-time" -> maxWarmupTime = Long.parseLong(entry.value());
+        case "model" -> model = entry.value(decoder);
+        case "pattern" -> pattern = entry.value(decoder);
+        case "case-insensitive" -> caseInsensitive = entry.value(decoder).equals("true");
+        case "unicode" -> unicode = entry.value(decoder).equals("true");
+        case "haystack" -> {
+          haystackBytes = entry.bytes();
+          if (mode == InputMode.STRING) {
+            haystack = entry.value(decoder);
+          }
+        }
+        case "max-iters" -> maxIters = Integer.parseInt(entry.value(decoder));
+        case "max-warmup-iters" -> maxWarmupIters = Integer.parseInt(entry.value(decoder));
+        case "max-time" -> maxTime = Long.parseLong(entry.value(decoder));
+        case "max-warmup-time" -> maxWarmupTime = Long.parseLong(entry.value(decoder));
         default -> throw new IllegalArgumentException("unrecognized KLV key: " + entry.key());
       }
     }
@@ -58,7 +117,7 @@ record BenchmarkConfig(
     if (!model.equals("regex-redux") && pattern == null) {
       throw new IllegalArgumentException("missing pattern");
     }
-    if (haystack == null) {
+    if (haystackBytes == null) {
       throw new IllegalArgumentException("missing haystack");
     }
     return new BenchmarkConfig(
@@ -67,6 +126,7 @@ record BenchmarkConfig(
         caseInsensitive,
         unicode,
         haystack,
+        haystackBytes,
         maxIters,
         maxWarmupIters,
         maxTime,
@@ -102,7 +162,7 @@ record BenchmarkConfig(
     if (input[valueEnd] != '\n') {
       throw new IllegalArgumentException("missing KLV line terminator for " + key);
     }
-    return new KlvEntry(key, decode(input, valueStart, valueLength, decoder), valueEnd + 1);
+    return new KlvEntry(key, input, valueStart, valueLength, valueEnd + 1);
   }
 
   private static int findColon(byte[] input, int start) {
@@ -119,5 +179,35 @@ record BenchmarkConfig(
     return decoder.decode(ByteBuffer.wrap(input, start, length)).toString();
   }
 
-  private record KlvEntry(String key, String value, int nextOffset) {}
+  private static final class KlvEntry {
+    private final String key;
+    private final byte[] input;
+    private final int valueStart;
+    private final int valueLength;
+    private final int nextOffset;
+
+    KlvEntry(String key, byte[] input, int valueStart, int valueLength, int nextOffset) {
+      this.key = key;
+      this.input = input;
+      this.valueStart = valueStart;
+      this.valueLength = valueLength;
+      this.nextOffset = nextOffset;
+    }
+
+    String key() {
+      return key;
+    }
+
+    int nextOffset() {
+      return nextOffset;
+    }
+
+    String value(CharsetDecoder decoder) throws CharacterCodingException {
+      return decode(input, valueStart, valueLength, decoder);
+    }
+
+    byte[] bytes() {
+      return Arrays.copyOfRange(input, valueStart, valueStart + valueLength);
+    }
+  }
 }

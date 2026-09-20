@@ -47,7 +47,8 @@ engines = [
   'go/regexp',
   'pcre2/jit',
   'python/regex',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 analysis = '''
 Runs the bible ref regex on a very long haystack.
@@ -71,7 +72,8 @@ engines = [
   're2',
   'rust/regex',
   'rust/regexold',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 analysis = '''
 Does the same as `long`, but on a very short haystack. PCRE2 does better here
@@ -110,7 +112,8 @@ engines = [
   'go/regexp',
   'pcre2/jit',
   'python/regex',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 analysis = '''
 This provides an interesting counter-balance to the `short` benchmark. Namely,

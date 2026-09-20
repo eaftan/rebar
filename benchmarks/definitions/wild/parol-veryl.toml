@@ -18,7 +18,8 @@ count = 124_800
 engines = [
   'rust/regex',
   'rust/regexold',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 
 [[bench]]
@@ -31,7 +32,8 @@ count = 124_800
 engines = [
   'rust/regex',
   'rust/regexold',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 
 [[bench]]

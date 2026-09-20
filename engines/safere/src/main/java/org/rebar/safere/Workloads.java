@@ -24,7 +24,10 @@ final class Workloads {
 
   private Workloads() {}
 
-  static IntWorkload create(BenchmarkConfig config) {
+  static IntWorkload create(BenchmarkConfig config, InputMode mode) {
+    if (mode == InputMode.UTF8) {
+      return Utf8Workloads.create(config);
+    }
     return switch (config.model()) {
       case "count" -> modelCount(config);
       case "count-spans" -> modelCountSpans(config);
@@ -70,7 +73,7 @@ final class Workloads {
       Matcher matcher = pattern.matcher(config.haystack());
       while (matcher.find()) {
         for (int group = 0; group <= matcher.groupCount(); group++) {
-          if (matcher.group(group) != null) {
+          if (matcher.start(group) >= 0) {
             count++;
           }
         }
@@ -102,7 +105,7 @@ final class Workloads {
         Matcher matcher = pattern.matcher(lines.next());
         while (matcher.find()) {
           for (int group = 0; group <= matcher.groupCount(); group++) {
-            if (matcher.group(group) != null) {
+            if (matcher.start(group) >= 0) {
               count++;
             }
           }

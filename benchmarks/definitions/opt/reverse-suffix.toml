@@ -26,7 +26,8 @@ engines = [
   'go/regexp',
   # Does not do it.
   'pcre2/jit',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 analysis = '''
 A regex that looks for any words preceding `Holmes`. The reverse suffix
@@ -49,7 +50,8 @@ engines = [
   're2',
   'go/regexp',
   'pcre2/jit',
-  'safere',
+  'safere/string',
+  'safere/utf8',
 ]
 analysis = '''
 This benchmark checks that the reverse suffix optimization does not result in
@@ -102,7 +104,8 @@ engines = [
   'hyperscan',
   'icu',
   'java/hotspot',
-  'safere',
+  'safere/string',
+  'safere/utf8',
   'javascript/v8',
   'pcre2',
   'pcre2/jit',
@@ -141,7 +144,8 @@ engines = [
   'hyperscan',
   'icu',
   'java/hotspot',
-  'safere',
+  'safere/string',
+  'safere/utf8',
   'javascript/v8',
   'pcre2',
   'pcre2/jit',
