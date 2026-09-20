@@ -17,6 +17,7 @@ engines = [
   'hyperscan',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -29,6 +30,7 @@ engines = [
   'hyperscan',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -42,6 +44,7 @@ engines = [
   'hyperscan',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -55,6 +58,7 @@ engines = [
   'hyperscan',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -68,6 +72,7 @@ engines = [
   'hyperscan',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -95,6 +100,7 @@ engines = [
   'hyperscan',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -121,6 +127,7 @@ engines = [
   'hyperscan',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -133,6 +140,7 @@ engines = [
   'hyperscan',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 # The 'literal-inner' benchmarks test how Hyperscan does with a literal that is
@@ -149,6 +157,7 @@ engines = [
   'hyperscan',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -161,6 +170,7 @@ engines = [
   'hyperscan',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 # The 'fixed-length-words' benchmarks are specifically designed to omit any
@@ -175,6 +185,7 @@ engines = [
   'hyperscan',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -187,6 +198,7 @@ engines = [
   'hyperscan',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 # This one enables Unicode mode, which slows Hyperscan down quite a bit.
@@ -204,4 +216,5 @@ engines = [
   'hyperscan',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]

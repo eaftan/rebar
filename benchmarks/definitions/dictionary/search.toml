@@ -42,6 +42,7 @@ engines = [
   're2',
   'rust/regex',
   # 'rust/regexold', # timeout
+  'safere',
 ]
 
 [[bench]]
@@ -60,4 +61,5 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]

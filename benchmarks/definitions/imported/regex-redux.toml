@@ -28,6 +28,7 @@ engines = [
   'go/regexp',
   'hyperscan',
   'java/hotspot',
+  'safere',
   'javascript/v8',
   'pcre2',
   'pcre2/jit',

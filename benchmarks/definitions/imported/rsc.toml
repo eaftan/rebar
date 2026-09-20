@@ -35,6 +35,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -55,6 +56,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -75,6 +77,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -95,6 +98,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -115,6 +119,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -134,6 +139,7 @@ engines = [
   're2',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -154,6 +160,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -174,6 +181,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -194,6 +202,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -214,6 +223,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -234,6 +244,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -254,6 +265,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -274,6 +286,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -294,6 +307,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -314,6 +328,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -334,6 +349,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -354,6 +370,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -374,6 +391,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -394,6 +412,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -414,6 +433,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -434,6 +454,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -454,6 +475,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -474,6 +496,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -494,6 +517,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -514,6 +538,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -534,6 +559,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -554,6 +580,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -574,6 +601,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -594,6 +622,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -614,6 +643,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -634,6 +664,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -654,6 +685,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -674,6 +706,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -694,6 +727,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -714,6 +748,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -734,6 +769,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -754,6 +790,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -774,6 +811,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -794,6 +832,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -814,6 +853,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -834,6 +874,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -854,6 +895,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -874,6 +916,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -894,4 +937,5 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]

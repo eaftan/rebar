@@ -47,6 +47,7 @@ engines = [
   'dotnet/compiled',
   'go/regexp',
   'java/hotspot',
+  'safere',
   'javascript/v8',
   'pcre2/jit',
   'python/re',

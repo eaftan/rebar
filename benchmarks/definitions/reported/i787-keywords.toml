@@ -76,6 +76,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -90,6 +91,7 @@ engines = [
   'python/regex',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 
 [[bench]]
@@ -108,6 +110,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 analysis = '''
 This is the "optimized" variant of the regex as posted in the GitHub issue
@@ -130,6 +133,7 @@ engines = [
   'python/regex',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 analysis = '''
 Same as `opt-ascii`, but with Unicode mode enabled.

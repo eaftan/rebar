@@ -22,6 +22,7 @@ engines = [
   'rust/regex',
   'rust/regexold',
   'rust/regex/lite',
+  'safere',
 ]
 analysis = '''
 A simple benchmark that matches each individual codepoint.

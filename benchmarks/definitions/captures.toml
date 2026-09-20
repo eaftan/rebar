@@ -32,6 +32,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere',
 ]
 analysis = '''
 This tests a case where there are lots of capture groups and also lots of

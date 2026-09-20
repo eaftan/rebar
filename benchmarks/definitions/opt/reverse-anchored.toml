@@ -25,4 +25,5 @@ engines = [
   # Does not.
   # See: https://github.com/golang/go/issues/21743
   'go/regexp',
+  'safere',
 ]
