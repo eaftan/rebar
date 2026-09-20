@@ -368,9 +368,9 @@
   [engine.version]
     bin = "java"
     args = ["Main", "version"]
-    # We specifically require a mention of 'HotSpot' to avoid accidentally
-    # benchmarking something other than what we advertise.
-    regex = '^Java HotSpot.*VM (?P<version>.*)'
+    # OpenJDK's HotSpot VM identifies itself as "OpenJDK 64-Bit Server VM".
+    # Accept both names while excluding other JVM implementations.
+    regex = '^(?:Java HotSpot.*|OpenJDK 64-Bit Server) VM (?P<version>.*)'
   [engine.run]
     bin = "java"
     args = ["Main"]
@@ -394,8 +394,8 @@
     bin = "java"
     args = ["--add-modules=jdk.incubator.vector", "-Dorg.safere.experimental.vectorScanProvider=vector", "-cp", "target/classes:target/dependency/*", "org.rebar.safere.Main", "string"]
   [[engine.build]]
-    bin = "sh"
-    args = ["build.sh"]
+    bin = "mvn"
+    args = ["-q", "clean", "verify"]
   [[engine.clean]]
     bin = "mvn"
     args = ["-q", "clean"]
@@ -412,8 +412,8 @@
     bin = "java"
     args = ["--add-modules=jdk.incubator.vector", "-Dorg.safere.experimental.vectorScanProvider=vector", "-cp", "target/classes:target/dependency/*", "org.rebar.safere.Main", "utf8"]
   [[engine.build]]
-    bin = "sh"
-    args = ["build.sh"]
+    bin = "mvn"
+    args = ["-q", "clean", "verify"]
   [[engine.clean]]
     bin = "mvn"
     args = ["-q", "clean"]

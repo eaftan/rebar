@@ -8,7 +8,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import org.safere.Pattern;
 
-// The parsed haystack bytes are not mutated, and record equality is not used.
 record BenchmarkConfig(
     String model,
     String pattern,

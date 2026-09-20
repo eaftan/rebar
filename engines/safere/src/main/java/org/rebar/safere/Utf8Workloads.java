@@ -26,7 +26,7 @@ final class Utf8Workloads {
 
   private Utf8Workloads() {}
 
-  static Workloads.IntWorkload create(BenchmarkConfig config) {
+  static Workloads.Workload create(BenchmarkConfig config) {
     byte[] haystack = config.haystackBytes();
     Utf8Input input = Utf8Input.validated(haystack);
     return switch (config.model()) {
@@ -50,11 +50,11 @@ final class Utf8Workloads {
     return count;
   }
 
-  private static Workloads.IntWorkload count(Pattern pattern, Utf8Input input) {
+  private static Workloads.Workload count(Pattern pattern, Utf8Input input) {
     return () -> countMatches(pattern, input);
   }
 
-  private static Workloads.IntWorkload countSpans(Pattern pattern, Utf8Input input) {
+  private static Workloads.Workload countSpans(Pattern pattern, Utf8Input input) {
     return () -> {
       int sum = 0;
       Utf8Matcher matcher = pattern.matcher(input);
@@ -65,7 +65,7 @@ final class Utf8Workloads {
     };
   }
 
-  private static Workloads.IntWorkload countCaptures(Pattern pattern, Utf8Input input) {
+  private static Workloads.Workload countCaptures(Pattern pattern, Utf8Input input) {
     return () -> {
       int count = 0;
       Utf8Matcher matcher = pattern.matcher(input);
@@ -80,7 +80,7 @@ final class Utf8Workloads {
     };
   }
 
-  private static Workloads.IntWorkload grep(Pattern pattern, byte[] haystack, boolean captures) {
+  private static Workloads.Workload grep(Pattern pattern, byte[] haystack, boolean captures) {
     return () -> {
       int count = 0;
       for (int lineStart = 0; lineStart < haystack.length; ) {

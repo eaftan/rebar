@@ -10,8 +10,8 @@ Install a JDK 21 or newer and [Apache Maven 3.9 or newer][maven-install]. Set
 `JAVA_HOME` to the JDK and put its `bin` directory and Maven's `bin` directory
 on `PATH`. Check that `java -version`, `javac -version`, and `mvn -version` all
 work, and that Maven reports the intended JDK. The first build needs access to
-Maven Central to download SafeRE, JMH, and the Maven plugins. Rebar invokes the
-build script with `sh`, so it also needs a POSIX shell.
+Maven Central to download SafeRE, JMH, and the Maven plugins. Rebar invokes
+Maven directly with `mvn -q clean verify`.
 
 `rebar build -e '^safere/(string|utf8)$'` uses the
 `org.safere:safere:0.11.0` release, compiles the runner, copies its runtime
@@ -50,9 +50,9 @@ samples, the runner selects evenly across their duration distribution rather
 than retaining only the fastest. `max-warmup-iters` controls whether JMH warms
 up at all: zero skips warmup, and any positive value enables its single warmup
 iteration when the warmup time budget is positive. Neither iteration limit
-bounds the number of invocations JMH performs within an iteration. With zero
-time budgets, as in `rebar measure --test`, the runner executes directly for
-correctness.
+bounds the number of invocations JMH performs within an iteration. With a zero
+measurement time budget, as in `rebar measure --test`, the runner uses the
+direct loop and still runs any configured warmup before its one measurement.
 The unused compilation model also retains the direct Rebar timing loop.
 
 The default 3-second measurement and 1.5-second warmup budgets yield one

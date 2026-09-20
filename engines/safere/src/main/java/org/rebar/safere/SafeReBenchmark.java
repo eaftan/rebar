@@ -3,27 +3,33 @@ package org.rebar.safere;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.Param;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 
 @State(Scope.Thread)
 public class SafeReBenchmark {
-  private Workloads.IntWorkload workload;
+  @Param("unset")
+  public String inputPath;
+
+  @Param("string")
+  public String inputMode;
+
+  @Param("0")
+  public int expectedCount;
+
+  private Workloads.Workload workload;
 
   @Setup
   public void setup() throws Exception {
-    String input = System.getProperty("rebar.safere.input");
-    if (input == null) {
-      throw new IllegalStateException("missing rebar.safere.input");
-    }
-    InputMode mode = InputMode.parse(System.getProperty("rebar.safere.mode"));
+    InputMode mode = InputMode.parse(inputMode);
     workload =
-        Workloads.create(BenchmarkConfig.parse(Files.readAllBytes(Path.of(input)), mode), mode);
-    int expected = Integer.parseInt(System.getProperty("rebar.safere.count"));
+        Workloads.create(BenchmarkConfig.parse(Files.readAllBytes(Path.of(inputPath)), mode), mode);
     int actual = workload.run();
-    if (actual != expected) {
-      throw new IllegalStateException("JMH fork count " + actual + " differed from " + expected);
+    if (actual != expectedCount) {
+      throw new IllegalStateException(
+          "JMH fork count " + actual + " differed from " + expectedCount);
     }
   }
 

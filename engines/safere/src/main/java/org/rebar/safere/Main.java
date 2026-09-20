@@ -52,16 +52,15 @@ public final class Main {
               pattern ->
                   mode == InputMode.UTF8
                       ? Utf8Workloads.countMatches(pattern, utf8Input)
-                      : Workloads.countMatches(pattern, config.haystack()))) {
+                      : StringWorkloads.countMatches(pattern, config.haystack()))) {
         System.out.printf("%d,%d%n", sample.duration(), sample.count());
       }
       return;
     }
 
-    Workloads.IntWorkload workload = Workloads.create(config, mode);
-    // Rebar's --test runs one operation to check its count. Starting a JMH fork
-    // for every correctness check adds no useful measurement information.
-    if (config.maxTime() == 0 && config.maxWarmupTime() == 0) {
+    Workloads.Workload workload = Workloads.create(config, mode);
+    // A zero measurement budget still runs one operation for its count.
+    if (config.maxTime() == 0) {
       for (Sample sample : sampleDirect(config, workload::run, Integer::intValue)) {
         System.out.printf("%d,%d%n", sample.duration(), sample.count());
       }
@@ -99,8 +98,6 @@ public final class Main {
     try {
       Files.write(input, raw);
       int warmupIterations = config.maxWarmupIters() > 0 && config.maxWarmupTime() > 0 ? 1 : 0;
-      long measurementNs = Math.max(1_000_000L, config.maxTime());
-      long warmupNs = Math.max(1_000_000L, config.maxWarmupTime());
       Options options =
           new OptionsBuilder()
               .include("^" + SafeReBenchmark.class.getName() + ".run$")
@@ -109,15 +106,16 @@ public final class Main {
               .forks(1)
               .threads(1)
               .warmupIterations(warmupIterations)
-              .warmupTime(TimeValue.nanoseconds(warmupNs))
+              .warmupTime(TimeValue.nanoseconds(config.maxWarmupTime()))
               .measurementIterations(1)
-              .measurementTime(TimeValue.nanoseconds(measurementNs))
+              .measurementTime(TimeValue.nanoseconds(config.maxTime()))
+              .param("inputPath", input.toString())
+              .param("inputMode", mode.argument())
+              .param("expectedCount", Integer.toString(count))
+              // The JMH fork needs the incubator module to use SafeRE's Vector scan provider.
               .jvmArgsAppend(
                   "--add-modules=jdk.incubator.vector",
-                  "-Dorg.safere.experimental.vectorScanProvider=vector",
-                  "-Drebar.safere.input=" + input,
-                  "-Drebar.safere.mode=" + mode.argument(),
-                  "-Drebar.safere.count=" + count)
+                  "-Dorg.safere.experimental.vectorScanProvider=vector")
               .output(output.toString())
               .build();
       var results = new Runner(options).run();
