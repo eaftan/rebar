@@ -91,8 +91,8 @@ final class Utf8Workloads {
           lineEnd++;
         }
         Utf8Input line = Utf8Input.trusted(haystack, lineStart, lineEnd - lineStart);
-        Utf8Matcher matcher = pattern.matcher(line);
         if (captures) {
+          Utf8Matcher matcher = pattern.matcher(line);
           while (matcher.find()) {
             for (int group = 0; group <= matcher.groupCount(); group++) {
               if (matcher.start(group) >= 0) {
@@ -100,7 +100,7 @@ final class Utf8Workloads {
               }
             }
           }
-        } else if (matcher.find()) {
+        } else if (pattern.find(line)) {
           count++;
         }
         lineStart = lineEnd;

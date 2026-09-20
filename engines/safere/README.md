@@ -35,7 +35,8 @@ entry in this Rebar integration.
 Both engines reject invalid UTF-8 haystacks. The String engine decodes the
 haystack before timing; the UTF-8 engine validates it once before timing and
 then searches borrowed byte views. UTF-8 grep splits lines over the original
-bytes, and UTF-8 regex-redux performs replacements through `Utf8Sink`.
+bytes and uses SafeRE's capture-free `Pattern.find(Utf8Input)` for boolean
+line checks. UTF-8 regex-redux performs replacements through `Utf8Sink`.
 `count-spans` sums UTF-16 code units for the String engine and bytes for the
 UTF-8 engine, so Rebar uses engine-specific expected counts where needed.
 
@@ -45,10 +46,12 @@ dividing Rebar's warmup and measurement time budgets equally among them. JMH
 samples individual invocations; the runner writes their durations and checked
 result count in Rebar's `duration_ns,count` format. The fork checks the count
 before sampling. JMH setup and fork startup are outside those time budgets.
-Rebar's `max-iters` limits the number of samples written, while
-`max-warmup-iters` limits JMH warmup iterations. Neither option bounds the
-number of invocations JMH performs within an iteration. With zero time budgets,
-as in `rebar measure --test`, the runner executes directly for correctness.
+Rebar's `max-iters` limits the number of samples written. If JMH records more
+samples, the runner selects evenly across their duration distribution rather
+than retaining only the fastest. `max-warmup-iters` limits JMH warmup iterations.
+Neither option bounds the number of invocations JMH performs within an iteration.
+With zero time budgets, as in `rebar measure --test`, the runner executes directly
+for correctness.
 The unused compilation model also retains the direct Rebar timing loop.
 
 The default 3-second measurement and 1.5-second warmup budgets yield three
