@@ -18,10 +18,19 @@ build script with `sh`, so it also needs a POSIX shell.
 dependencies to `target/dependency`, and checks the Java code with Spotless,
 Error Prone, and PMD. To benchmark a newer SafeRE release, change the
 `org.safere:safere` dependency version in `pom.xml` and rebuild. Rebar's version
-command records the SafeRE and JVM versions in measurements.
+command records the SafeRE version, JVM version, and configured scanner
+in measurements.
 
 Run `mvn verify` from this directory to build and check the runner directly.
 Run `mvn spotless:apply` to format Java source before committing changes.
+
+Both engine commands enable SafeRE's experimental Vector API scanner with
+`--add-modules=jdk.incubator.vector` and
+`-Dorg.safere.experimental.vectorScanProvider=vector`. The runner also passes
+those flags to the JMH fork. This lets SafeRE use SIMD instructions for
+supported scans when the JVM and CPU can run them. A JDK with the incubator
+module is required to run either engine. There is no separate default-scanner
+entry in this Rebar integration.
 
 Both engines reject invalid UTF-8 haystacks. The String engine decodes the
 haystack before timing; the UTF-8 engine validates it once before timing and

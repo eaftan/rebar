@@ -83,8 +83,11 @@ public final class Main {
       throw new IllegalStateException("SafeRE version metadata has no version");
     }
     System.out.printf(
-        "SafeRE %s (%s %s)%n",
-        version, System.getProperty("java.vm.name"), System.getProperty("java.vm.version"));
+        "SafeRE %s (%s %s; scanner=%s)%n",
+        version,
+        System.getProperty("java.vm.name"),
+        System.getProperty("java.vm.version"),
+        System.getProperty("org.safere.experimental.vectorScanProvider", "swar"));
   }
 
   private static void runJmh(byte[] raw, BenchmarkConfig config, InputMode mode, int count)
@@ -112,6 +115,8 @@ public final class Main {
               .measurementIterations(measurementIterations)
               .measurementTime(TimeValue.nanoseconds(measurementNs))
               .jvmArgsAppend(
+                  "--add-modules=jdk.incubator.vector",
+                  "-Dorg.safere.experimental.vectorScanProvider=vector",
                   "-Drebar.safere.input=" + input,
                   "-Drebar.safere.mode=" + mode.argument(),
                   "-Drebar.safere.count=" + count)
