@@ -113,6 +113,7 @@ engines = [
   'go/regexp',
   'icu',
   'java/hotspot',
+  'safere',
   'javascript/v8',
   'perl',
   'python/re',
