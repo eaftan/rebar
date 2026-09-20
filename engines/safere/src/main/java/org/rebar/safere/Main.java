@@ -22,11 +22,18 @@ import org.openjdk.jmh.util.Statistics;
 import org.safere.Pattern;
 import org.safere.Utf8Input;
 
+/** Entry point for Rebar's SafeRE engines. */
 public final class Main {
   private record Sample(long duration, int count) {}
 
   private Main() {}
 
+  /**
+   * Runs a Rebar workload or prints the SafeRE version.
+   *
+   * @param args {@code string} or {@code utf8}, optionally followed by {@code version}
+   * @throws Exception if input parsing or workload execution fails
+   */
   public static void main(String... args) throws Exception {
     if (args.length < 1 || args.length > 2) {
       throw new IllegalArgumentException("usage: Main <string|utf8> [version]");

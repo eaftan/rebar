@@ -4,6 +4,7 @@ import java.util.Iterator;
 import org.safere.Matcher;
 import org.safere.Pattern;
 
+/** Implements Rebar workload models using SafeRE's String API. */
 final class StringWorkloads {
   private static final String REGEX_REDUX_EXPECTED =
       """

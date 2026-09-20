@@ -6,6 +6,7 @@ import org.safere.Pattern;
 import org.safere.Utf8Input;
 import org.safere.Utf8Matcher;
 
+/** Implements Rebar workload models using SafeRE's UTF-8 API. */
 final class Utf8Workloads {
   private static final String REGEX_REDUX_EXPECTED =
       """
