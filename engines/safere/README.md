@@ -15,14 +15,12 @@ build script with `sh`, so it also needs a POSIX shell.
 
 `rebar build -e '^safere/(string|utf8)$'` uses the
 `org.safere:safere:0.11.0` release, compiles the runner, copies its runtime
-dependencies to `target/dependency`, and checks the Java code with Spotless,
-Error Prone, and PMD. To benchmark a newer SafeRE release, change the
-`org.safere:safere` dependency version in `pom.xml` and rebuild. Rebar's version
-command records the SafeRE version, JVM version, and configured scanner
-in measurements.
+dependencies to `target/dependency`, and runs the JUnit tests. To benchmark a
+newer SafeRE release, change the `org.safere:safere` dependency version in
+`pom.xml` and rebuild. Rebar's version command records the SafeRE version, JVM
+version, and configured scanner in measurements.
 
-Run `mvn verify` from this directory to build and check the runner directly.
-Run `mvn spotless:apply` to format Java source before committing changes.
+Run `mvn verify` from this directory to build and test the runner directly.
 
 Both engine commands enable SafeRE's experimental Vector API scanner with
 `--add-modules=jdk.incubator.vector` and

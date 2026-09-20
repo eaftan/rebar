@@ -8,68 +8,18 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import org.safere.Pattern;
 
-final class BenchmarkConfig {
-  private final String model;
-  private final String pattern;
-  private final boolean caseInsensitive;
-  private final boolean unicode;
-  private final String haystack;
-  private final byte[] haystackBytes;
-  private final int maxIters;
-  private final int maxWarmupIters;
-  private final long maxTime;
-  private final long maxWarmupTime;
-
-  private BenchmarkConfig(
-      String model,
-      String pattern,
-      boolean caseInsensitive,
-      boolean unicode,
-      String haystack,
-      byte[] haystackBytes,
-      int maxIters,
-      int maxWarmupIters,
-      long maxTime,
-      long maxWarmupTime) {
-    this.model = model;
-    this.pattern = pattern;
-    this.caseInsensitive = caseInsensitive;
-    this.unicode = unicode;
-    this.haystack = haystack;
-    this.haystackBytes = haystackBytes;
-    this.maxIters = maxIters;
-    this.maxWarmupIters = maxWarmupIters;
-    this.maxTime = maxTime;
-    this.maxWarmupTime = maxWarmupTime;
-  }
-
-  String model() {
-    return model;
-  }
-
-  String haystack() {
-    return haystack;
-  }
-
-  byte[] haystackBytes() {
-    return haystackBytes;
-  }
-
-  int maxIters() {
-    return maxIters;
-  }
-
-  int maxWarmupIters() {
-    return maxWarmupIters;
-  }
-
-  long maxTime() {
-    return maxTime;
-  }
-
-  long maxWarmupTime() {
-    return maxWarmupTime;
-  }
+// The parsed haystack bytes are not mutated, and record equality is not used.
+record BenchmarkConfig(
+    String model,
+    String pattern,
+    boolean caseInsensitive,
+    boolean unicode,
+    String haystack,
+    byte[] haystackBytes,
+    int maxIters,
+    int maxWarmupIters,
+    long maxTime,
+    long maxWarmupTime) {
 
   static BenchmarkConfig parse(byte[] input, InputMode mode) throws CharacterCodingException {
     CharsetDecoder decoder =

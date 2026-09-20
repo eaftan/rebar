@@ -1,6 +1,7 @@
 package org.rebar.safere;
 
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -124,37 +125,41 @@ public final class Main {
         throw new Exception("JMH returned " + results.size() + " results; expected one");
       }
       RunResult result = results.iterator().next();
-      Statistics statistics = result.getPrimaryResult().getStatistics();
-      long total = statistics.getN();
-      long limit = Math.min(total, config.maxIters());
-      if (limit == 0) {
-        throw new Exception("JMH returned no samples");
-      }
-      Iterator<Map.Entry<Double, Long>> samples = statistics.getRawData();
-      long seen = 0;
-      long emitted = 0;
-      while (samples.hasNext()) {
-        Map.Entry<Double, Long> sample = samples.next();
-        long duration = Math.max(1, Math.round(sample.getKey()));
-        seen += sample.getValue();
-        // JMH's raw samples are sorted by duration. Select evenly across the
-        // cumulative distribution so a small max-iters does not keep only the fastest samples.
-        long selected = Math.round((double) seen * limit / total);
-        long n = selected - emitted;
-        for (long i = 0; i < n; i++) {
-          System.out.printf("%d,%d%n", duration, count);
-        }
-        emitted = selected;
-      }
-      if (seen != total || emitted != limit) {
-        throw new Exception("JMH sample count changed while reporting results");
-      }
+      emitSamples(result.getPrimaryResult().getStatistics(), config.maxIters(), count, System.out);
     } catch (Exception e) {
       System.err.print(Files.readString(output));
       throw e;
     } finally {
       Files.deleteIfExists(input);
       Files.deleteIfExists(output);
+    }
+  }
+
+  static void emitSamples(Statistics statistics, long maxIters, int count, PrintStream output)
+      throws Exception {
+    long total = statistics.getN();
+    long limit = Math.min(total, maxIters);
+    if (limit == 0) {
+      throw new Exception("JMH returned no samples");
+    }
+    Iterator<Map.Entry<Double, Long>> samples = statistics.getRawData();
+    long seen = 0;
+    long emitted = 0;
+    while (samples.hasNext()) {
+      Map.Entry<Double, Long> sample = samples.next();
+      long duration = Math.max(1, Math.round(sample.getKey()));
+      seen += sample.getValue();
+      // JMH's raw samples are sorted by duration. Select evenly across the
+      // cumulative distribution so a small max-iters does not keep only the fastest samples.
+      long selected = Math.round((double) seen * limit / total);
+      long n = selected - emitted;
+      for (long i = 0; i < n; i++) {
+        output.printf("%d,%d%n", duration, count);
+      }
+      emitted = selected;
+    }
+    if (seen != total || emitted != limit) {
+      throw new Exception("JMH sample count changed while reporting results");
     }
   }
 
