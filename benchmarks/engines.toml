@@ -389,7 +389,7 @@
   [engine.version]
     bin = "java"
     args = ["-cp", "target/classes:target/dependency/*", "org.rebar.safere.Main", "version"]
-    regex = '^SafeRE (?P<version>[0-9]+\.[0-9]+\.[0-9]+ \([^\n]+\))'
+    regex = '^SafeRE (?P<version>[0-9]+\.[0-9]+\.[0-9]+-SNAPSHOT sha256:[0-9a-f]{64} \([^\n]+\))'
   [engine.run]
     bin = "java"
     args = ["-cp", "target/classes:target/dependency/*", "org.rebar.safere.Main"]

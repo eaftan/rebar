@@ -3,12 +3,13 @@ same benchmark models and timing loop as Rebar's `java/hotspot` runner. The only
 regex API change is to use `org.safere.Pattern` and `org.safere.Matcher`.
 
 `rebar build -e '^safere$'` needs Java 21 or newer and Maven. The Maven build
-compiles the runner, copies its pinned `org.safere:safere:0.11.0` runtime
-dependency to `target/dependency`, and checks the Java code with Spotless,
-Error Prone, and PMD. Rebar's version command loads SafeRE and reads the
-version embedded in that JAR, so the version is also a build receipt.
-The recorded version includes the JVM name and version to distinguish results
-from different Java runtimes.
+refreshes `org.safere:safere:0.12.0-SNAPSHOT` from SafeRE's Central Portal
+snapshot repository, compiles the runner, copies its runtime dependency to
+`target/dependency`, and checks the Java code with Spotless, Error Prone, and
+PMD. Rebar's version command records the SafeRE version, SHA-256 of the exact
+resolved JAR, and JVM identity so results from changing snapshots remain
+distinguishable. Snapshots may expire, and the dependency version will need to
+advance when SafeRE begins its next development cycle.
 
 Run `mvn verify` from this directory to build and check the runner directly.
 Run `mvn spotless:apply` to format Java source before committing changes.

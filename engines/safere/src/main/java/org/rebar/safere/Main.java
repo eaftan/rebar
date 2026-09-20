@@ -6,7 +6,11 @@ import java.nio.ByteBuffer;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.HexFormat;
 import java.util.List;
 import java.util.Properties;
 import org.safere.Matcher;
@@ -136,7 +140,11 @@ public final class Main {
       }
       String vmName = System.getProperty("java.vm.name");
       String vmVersion = System.getProperty("java.vm.version");
-      System.out.printf("SafeRE %s (%s %s)\n", version, vmName, vmVersion);
+      Path jar = Path.of(Pattern.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+      byte[] digest = MessageDigest.getInstance("SHA-256").digest(Files.readAllBytes(jar));
+      System.out.printf(
+          "SafeRE %s sha256:%s (%s %s)%n",
+          version, HexFormat.of().formatHex(digest), vmName, vmVersion);
       return;
     }
 
