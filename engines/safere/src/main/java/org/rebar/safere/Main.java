@@ -97,13 +97,9 @@ public final class Main {
     Path output = Files.createTempFile("rebar-safere-jmh-", ".log");
     try {
       Files.write(input, raw);
-      int measurementIterations = Math.min(3, config.maxIters());
-      int warmupIterations = Math.min(2, config.maxWarmupIters());
-      long measurementNs = Math.max(1_000_000L, config.maxTime() / measurementIterations);
-      long warmupNs =
-          warmupIterations == 0
-              ? 1_000_000L
-              : Math.max(1_000_000L, config.maxWarmupTime() / warmupIterations);
+      int warmupIterations = config.maxWarmupIters() > 0 && config.maxWarmupTime() > 0 ? 1 : 0;
+      long measurementNs = Math.max(1_000_000L, config.maxTime());
+      long warmupNs = Math.max(1_000_000L, config.maxWarmupTime());
       Options options =
           new OptionsBuilder()
               .include("^" + SafeReBenchmark.class.getName() + ".run$")
@@ -113,7 +109,7 @@ public final class Main {
               .threads(1)
               .warmupIterations(warmupIterations)
               .warmupTime(TimeValue.nanoseconds(warmupNs))
-              .measurementIterations(measurementIterations)
+              .measurementIterations(1)
               .measurementTime(TimeValue.nanoseconds(measurementNs))
               .jvmArgsAppend(
                   "--add-modules=jdk.incubator.vector",

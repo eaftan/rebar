@@ -41,25 +41,28 @@ line checks. UTF-8 regex-redux performs replacements through `Utf8Sink`.
 UTF-8 engine, so Rebar uses engine-specific expected counts where needed.
 
 For normal measurements, the runner uses JMH `SampleTime` with one fork and one
-thread. It uses up to two warmup iterations and three measurement iterations,
-dividing Rebar's warmup and measurement time budgets equally among them. JMH
-samples individual invocations; the runner writes their durations and checked
-result count in Rebar's `duration_ns,count` format. The fork checks the count
-before sampling. JMH setup and fork startup are outside those time budgets.
+thread. It uses one warmup iteration for Rebar's full warmup time budget when
+warmup is enabled, then one measurement iteration for the full measurement
+time budget. JMH samples individual invocations; the runner writes their
+durations and checked result count in Rebar's `duration_ns,count` format. The
+fork checks the count before sampling. JMH setup and fork startup are outside
+those time budgets.
 Rebar's `max-iters` limits the number of samples written. If JMH records more
 samples, the runner selects evenly across their duration distribution rather
-than retaining only the fastest. `max-warmup-iters` limits JMH warmup iterations.
-Neither option bounds the number of invocations JMH performs within an iteration.
-With zero time budgets, as in `rebar measure --test`, the runner executes directly
-for correctness.
+than retaining only the fastest. `max-warmup-iters` controls whether JMH warms
+up at all: zero skips warmup, and any positive value enables its single warmup
+iteration when the warmup time budget is positive. Neither iteration limit
+bounds the number of invocations JMH performs within an iteration. With zero
+time budgets, as in `rebar measure --test`, the runner executes directly for
+correctness.
 The unused compilation model also retains the direct Rebar timing loop.
 
-The default 3-second measurement and 1.5-second warmup budgets yield three
-1-second measurement iterations and two 750-millisecond warmup iterations.
-These are a starting point for discussion: one fork keeps each workload within
-Rebar's default 10-second process timeout, but independent forks would give
-better evidence about JVM startup variation. Rebar aggregates the JMH sampled
-invocations, so its summary statistics do not reflect variation across forks.
+The default 3-second measurement and 1.5-second warmup budgets yield one
+3-second measurement iteration and one 1.5-second warmup iteration. One fork
+helps each workload fit Rebar's default 10-second process timeout, but
+independent forks would give better evidence about JVM startup variation.
+Rebar aggregates the JMH sampled invocations, so its summary statistics do not
+reflect variation across forks.
 SafeRE is intentionally omitted from curated compilation benchmarks for the
 same reason `java/hotspot` is omitted. Patterns using unsupported syntax, such
 as backreferences or lookaround, are also excluded.
