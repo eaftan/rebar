@@ -55,6 +55,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 analysis = '''
 This benchmark just tries to extract some properties of a subset of functions
@@ -90,6 +91,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 analysis = '''
 This benchmark looks for the first three "words" in each line, and captures
@@ -114,6 +116,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 analysis = '''
 This is the same as `first-three-words-english`, but enables Unicode and runs
@@ -160,6 +163,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 analysis = '''
 This is the same as the English counterpart, but enables Unicode mode and thus

@@ -105,7 +105,7 @@ public final class Main {
     try {
       Files.write(input, raw);
       int warmupIterations = config.maxWarmupIters() > 0 && config.maxWarmupTime() > 0 ? 1 : 0;
-      Options options =
+      var optionsBuilder =
           new OptionsBuilder()
               .include("^" + SafeReBenchmark.class.getName() + ".run$")
               .mode(Mode.SampleTime)
@@ -119,12 +119,14 @@ public final class Main {
               .param("inputPath", input.toString())
               .param("inputMode", mode.argument())
               .param("expectedCount", Integer.toString(count))
-              // The JMH fork needs the incubator module to use SafeRE's Vector scan provider.
-              .jvmArgsAppend(
-                  "--add-modules=jdk.incubator.vector",
-                  "-Dorg.safere.experimental.vectorScanProvider=vector")
-              .output(output.toString())
-              .build();
+              .output(output.toString());
+      if ("vector".equals(System.getProperty("org.safere.experimental.vectorScanProvider"))) {
+        // The JMH fork needs the same provider and incubator module as its parent process.
+        optionsBuilder.jvmArgsAppend(
+            "--add-modules=jdk.incubator.vector",
+            "-Dorg.safere.experimental.vectorScanProvider=vector");
+      }
+      Options options = optionsBuilder.build();
       var results = new Runner(options).run();
       if (results.size() != 1) {
         throw new Exception("JMH returned " + results.size() + " results; expected one");

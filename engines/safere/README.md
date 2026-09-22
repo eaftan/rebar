@@ -1,8 +1,9 @@
-This runner benchmarks [SafeRE], a linear-time Java regex library, as two Rebar
+This runner benchmarks [SafeRE], a linear-time Java regex library, as three Rebar
 engines. `safere/string` searches Java strings with `org.safere.Matcher` and
 reports UTF-16 match offsets. `safere/utf8` searches the original UTF-8 bytes
-with `org.safere.Utf8Matcher` and reports byte offsets. Both use [JMH] for
-search measurements and share one Maven build.
+with `org.safere.Utf8Matcher` and reports byte offsets. `safere/utf8-vector`
+uses the same UTF-8 API with SafeRE's experimental Vector API scanner enabled.
+All three use [JMH] for search measurements and share one Maven build.
 
 ## Build toolchain
 
@@ -13,7 +14,7 @@ work, and that Maven reports the intended JDK. The first build needs access to
 Maven Central to download SafeRE, JMH, and the Maven plugins. Rebar invokes
 Maven directly with `mvn -q clean verify`.
 
-`rebar build -e '^safere/(string|utf8)$'` uses the
+`rebar build -e '^safere/(string|utf8|utf8-vector)$'` uses the
 `org.safere:safere:0.11.0` release, compiles the runner, copies its runtime
 dependencies to `target/dependency`, and runs the JUnit tests. To benchmark a
 newer SafeRE release, change the `org.safere:safere` dependency version in
@@ -22,16 +23,16 @@ version, and configured scanner in measurements.
 
 Run `mvn verify` from this directory to build and test the runner directly.
 
-Both engine commands enable SafeRE's experimental Vector API scanner with
+`safere/string` and `safere/utf8` use SafeRE's default scanner.
+`safere/utf8-vector` enables the experimental Vector API scanner with
 `--add-modules=jdk.incubator.vector` and
 `-Dorg.safere.experimental.vectorScanProvider=vector`. The runner also passes
 those flags to the JMH fork. This lets SafeRE use SIMD instructions for
 supported scans when the JVM and CPU can run them. A JDK with the incubator
-module is required to run either engine. There is no separate default-scanner
-entry in this Rebar integration.
+module is required to run `safere/utf8-vector`.
 
-Both engines reject invalid UTF-8 haystacks. The String engine decodes the
-haystack before timing; the UTF-8 engine validates it once before timing and
+All three engines reject invalid UTF-8 haystacks. The String engine decodes the
+haystack before timing; the UTF-8 engines validate it once before timing and
 then searches borrowed byte views. UTF-8 grep splits lines over the original
 bytes and uses SafeRE's capture-free `Pattern.find(Utf8Input)` for boolean
 line checks. UTF-8 regex-redux performs replacements through `Utf8Sink`.

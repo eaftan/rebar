@@ -19,6 +19,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -33,6 +34,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -48,6 +50,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -63,6 +66,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -78,6 +82,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -107,6 +112,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -135,6 +141,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -149,6 +156,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 # The 'literal-inner' benchmarks test how Hyperscan does with a literal that is
@@ -167,6 +175,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -181,6 +190,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 # The 'fixed-length-words' benchmarks are specifically designed to omit any
@@ -197,6 +207,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -211,6 +222,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 # This one enables Unicode mode, which slows Hyperscan down quite a bit.
@@ -230,4 +242,5 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]

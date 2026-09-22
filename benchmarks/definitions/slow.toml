@@ -21,6 +21,7 @@ engines = [
   'rust/regex/pikevm',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 analysis = '''
 This one shows a particularly gnarly case where each search scans to the end
@@ -71,6 +72,7 @@ engines = [
   'rust/regex/pikevm',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 analysis = '''
 This is like `quadratic-regex-1x`, but doubles the counted repetition and
@@ -99,6 +101,7 @@ engines = [
   'java/hotspot',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
   'javascript/v8',
   'pcre2',
   'pcre2/jit',
@@ -137,6 +140,7 @@ engines = [
   'java/hotspot',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
   'javascript/v8',
   'pcre2',
   'pcre2/jit',

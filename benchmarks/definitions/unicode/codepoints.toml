@@ -24,6 +24,7 @@ engines = [
   'rust/regex/lite',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 analysis = '''
 A simple benchmark that matches each individual codepoint.

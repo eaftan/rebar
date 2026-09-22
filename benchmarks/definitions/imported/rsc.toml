@@ -37,6 +37,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -59,6 +60,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -81,6 +83,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -103,6 +106,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -125,6 +129,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -146,6 +151,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -168,6 +174,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -190,6 +197,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -212,6 +220,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -234,6 +243,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -256,6 +266,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -278,6 +289,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -300,6 +312,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -322,6 +335,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -344,6 +358,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -366,6 +381,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -388,6 +404,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -410,6 +427,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -432,6 +450,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -454,6 +473,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -476,6 +496,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -498,6 +519,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -520,6 +542,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -542,6 +565,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -564,6 +588,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -586,6 +611,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -608,6 +634,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -630,6 +657,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -652,6 +680,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -674,6 +703,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -696,6 +726,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -718,6 +749,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -740,6 +772,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -762,6 +795,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -784,6 +818,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -806,6 +841,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -828,6 +864,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -850,6 +887,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -872,6 +910,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -894,6 +933,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -916,6 +956,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -938,6 +979,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -960,6 +1002,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -982,4 +1025,5 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]

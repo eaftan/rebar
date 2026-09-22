@@ -78,6 +78,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -94,6 +95,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -114,6 +116,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 analysis = '''
 This is the "optimized" variant of the regex as posted in the GitHub issue
@@ -138,6 +141,7 @@ engines = [
   'rust/regexold',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 analysis = '''
 Same as `opt-ascii`, but with Unicode mode enabled.

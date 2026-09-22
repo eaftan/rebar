@@ -40,6 +40,7 @@ engines = [
   'pcre2/jit',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 analysis = '''
 A regex that looks for any words preceding and following `Holmes`. The reverse
@@ -68,6 +69,7 @@ engines = [
   'pcre2/jit',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 analysis = '''
 A very simple regex for matching things that might be email addresses. The
@@ -95,6 +97,7 @@ engines = [
   'pcre2/jit',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 analysis = '''
 This benchmark also uses the reverse inner optimization, and does despite
@@ -130,6 +133,7 @@ engines = [
   'pcre2/jit',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 analysis = '''
 This benchmark checks that the reverse inner optimization does not result
@@ -162,6 +166,7 @@ engines = [
   'pcre2/jit',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 analysis = '''
 This benchmark also checks that quadratic behavior does not occur. Unlike

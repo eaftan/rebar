@@ -22,6 +22,7 @@ engines = [
   'java/hotspot',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
   'javascript/v8',
   'pcre2',
   'pcre2/jit',
@@ -57,6 +58,7 @@ engines = [
   'java/hotspot',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
   'javascript/v8',
   'pcre2',
   'pcre2/jit',
@@ -95,6 +97,7 @@ engines = [
   'rust/regex/lite',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 analysis = '''
 This tests that `.` does match a `\n` when the `s` flag is enabled.
@@ -128,6 +131,7 @@ engines = [
   'rust/regex/lite',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 analysis = '''
 This tests that `.` does match a `\r` when the `s` flag is enabled.
@@ -161,6 +165,7 @@ engines = [
   'rust/regex/lite',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 analysis = '''
 This tests that `.` does not match a `\n` when the `m` flag is enabled.
@@ -228,6 +233,7 @@ engines = [
   'rust/regex/lite',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 analysis = '''
 This tests that `.` does match a `\n` when the `s` and `m` flags are enabled.
@@ -261,6 +267,7 @@ engines = [
   'rust/regex/lite',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 analysis = '''
 This tests that `.` does match a `\r` when the `s` and `m` flags are enabled.

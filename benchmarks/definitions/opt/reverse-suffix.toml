@@ -28,6 +28,7 @@ engines = [
   'pcre2/jit',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 analysis = '''
 A regex that looks for any words preceding `Holmes`. The reverse suffix
@@ -52,6 +53,7 @@ engines = [
   'pcre2/jit',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
 ]
 analysis = '''
 This benchmark checks that the reverse suffix optimization does not result in
@@ -106,6 +108,7 @@ engines = [
   'java/hotspot',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
   'javascript/v8',
   'pcre2',
   'pcre2/jit',
@@ -146,6 +149,7 @@ engines = [
   'java/hotspot',
   'safere/string',
   'safere/utf8',
+  'safere/utf8-vector',
   'javascript/v8',
   'pcre2',
   'pcre2/jit',
