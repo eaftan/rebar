@@ -381,6 +381,26 @@
     bin = "sh"
     args = ["-c", "rm -f *.class"]
 
+# RE2/J, a pure Java port of RE2, measured with JMH.
+#
+# URL: https://github.com/google/re2j
+[[engine]]
+  name = "re2j"
+  cwd = "../engines/re2j"
+  [engine.version]
+    bin = "java"
+    args = ["-cp", "target/classes:target/dependency/*", "org.rebar.re2j.Main", "version"]
+    regex = '^RE2/J (?P<version>.*)'
+  [engine.run]
+    bin = "java"
+    args = ["-cp", "target/classes:target/dependency/*", "org.rebar.re2j.Main"]
+  [[engine.build]]
+    bin = "mvn"
+    args = ["-q", "clean", "verify"]
+  [[engine.clean]]
+    bin = "mvn"
+    args = ["-q", "clean"]
+
 # Javascript's regex engine from v8.
 #
 # URL: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp

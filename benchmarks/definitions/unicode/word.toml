@@ -30,6 +30,7 @@ engines = [
   'python/re',
   'python/regex',
   're2',
+  're2j',
   'regress',
   'rust/regex',
   'rust/regex/lite',
@@ -65,6 +66,7 @@ engines = [
   'python/re',
   'python/regex',
   're2',
+  're2j',
   'regress',
   'rust/regex',
   'rust/regex/lite',
@@ -98,6 +100,7 @@ engines = [
   'python/re',
   'python/regex',
   're2',
+  're2j',
   'regress',
   # Uses the 'reverse inner' optimization which looks for 'Holmes' and then
   # does a reverse search for '\b\w+\s+' to find the start position.

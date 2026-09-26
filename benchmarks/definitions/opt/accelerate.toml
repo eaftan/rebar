@@ -25,6 +25,7 @@ engines = [
   'rust/regex/dense',
   'rust/regexold',
   're2',
+  're2j',
   'pcre2/jit',
 ]
 analysis = '''
@@ -44,6 +45,7 @@ engines = [
   'rust/regex/dense',
   'rust/regexold',
   're2',
+  're2j',
   'pcre2/jit',
 ]
 analysis = '''

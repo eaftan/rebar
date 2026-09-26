@@ -68,6 +68,7 @@ engines = [
   'python/re',
   'python/regex',
   're2',
+  're2j',
   'regress',
   'rust/regex',
   'rust/regex/lite',

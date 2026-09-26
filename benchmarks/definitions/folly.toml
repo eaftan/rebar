@@ -27,6 +27,7 @@ engines = [
   'hyperscan',
   'pcre2/jit',
   're2',
+  're2j',
   'rust/regex',
   'rust/regexold',
 ]
@@ -54,6 +55,7 @@ engines = [
   'hyperscan',
   'pcre2/jit',
   're2',
+  're2j',
   # This is what the regex crate uses internally, but we include it here
   # directly as a reference point. The regex crate being different from this
   # should raise eyebrows.
@@ -85,6 +87,7 @@ engines = [
   'hyperscan',
   'pcre2/jit',
   're2',
+  're2j',
   # This is what the regex crate uses internally, but we include it here
   # directly as a reference point. The regex crate being different from this
   # should raise eyebrows.
@@ -118,6 +121,7 @@ engines = [
   'hyperscan',
   'pcre2/jit',
   're2',
+  're2j',
   'rust/memchr/memmem',
   'rust/regex',
   'rust/regexold',

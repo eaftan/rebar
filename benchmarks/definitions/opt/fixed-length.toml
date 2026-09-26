@@ -35,6 +35,7 @@ engines = [
   'rust/regexold',
   # Does not appear to do it.
   're2',
+  're2j',
   # Does do it!
   'go/regexp',
 ]
@@ -88,6 +89,7 @@ engines = [
   'rust/regexold',
   # Does not do it.
   're2',
+  're2j',
   # Does not do it.
   # See: https://github.com/golang/go/issues/33484
   'go/regexp',
@@ -104,6 +106,7 @@ haystack = '𝛃𝛃𝛃𝛃𝛃𝛃𝛃𝛃𝛃𝛃𝛃'
 unicode = true
 count = 0
 engines = [
+  're2j',
 	'rust/regex',
   # Does not do it. Included as a point of comparison.
 	'rust/regex/hybrid',
@@ -127,6 +130,7 @@ engines = [
   # Does not do it.
   'rust/regexold',
   're2',
+  're2j',
   'go/regexp',
 ]
 analysis = '''
@@ -146,6 +150,7 @@ engines = [
   # Does not do it.
   'rust/regexold',
   're2',
+  're2j',
   'go/regexp',
 ]
 analysis = '''
@@ -167,6 +172,7 @@ engines = [
   'rust/regexold',
   # Does not do it.
   're2',
+  're2j',
   # Does not do it.
   'go/regexp',
 ]

@@ -34,6 +34,7 @@ engines = [
   'rust/regexold',
   # Does not do it.
   're2',
+  're2j',
   # Does not do it.
   'go/regexp',
   # Does not do it.
@@ -60,6 +61,7 @@ engines = [
   'rust/regexold',
   # Does not do it.
   're2',
+  're2j',
   # Does not do it.
   'go/regexp',
   # Does not do it.
@@ -87,6 +89,7 @@ engines = [
   'rust/regex/hybrid',
   'rust/regexold',
   're2',
+  're2j',
   'go/regexp',
   'pcre2/jit',
 ]
@@ -120,6 +123,7 @@ engines = [
   'rust/regex/hybrid',
   'rust/regexold',
   're2',
+  're2j',
   'go/regexp',
   'pcre2/jit',
 ]
@@ -150,6 +154,7 @@ engines = [
   'rust/regex/hybrid',
   'rust/regexold',
   're2',
+  're2j',
   'go/regexp',
   'pcre2/jit',
 ]

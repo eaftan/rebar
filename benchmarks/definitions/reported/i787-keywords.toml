@@ -73,6 +73,7 @@ engines = [
   'python/re',
   'python/regex',
   're2',
+  're2j',
   'regress',
   'rust/regex',
   'rust/regexold',
@@ -86,6 +87,7 @@ unicode = true
 haystack = { path = "bstr-ext-slice-65993b58.txt" }
 count = 5_674
 engines = [
+  're2j',
   'pcre2/jit',
   'python/regex',
   'rust/regex',
@@ -105,6 +107,7 @@ engines = [
   'python/re',
   'python/regex',
   're2',
+  're2j',
   'regress',
   'rust/regex',
   'rust/regexold',
@@ -126,6 +129,7 @@ unicode = true
 haystack = { path = "bstr-ext-slice-65993b58.txt" }
 count = 5_674
 engines = [
+  're2j',
   'pcre2/jit',
   'python/regex',
   'rust/regex',

@@ -19,6 +19,7 @@ engines = [
   'pcre2/jit',
   'python/regex',
   're2',
+  're2j',
   'rust/regex',
   'rust/regexold',
   'rust/regex/lite',
@@ -33,12 +34,17 @@ name = "any-all"
 regex = '(?s:.)+'
 haystack = { path = "unicode/allcodepoints.txt" }
 unicode = true
-count = 4_382_592
+count = [
+  # RE2/J reports UTF-16 code units instead of UTF-8 bytes.
+  { engine = 're2j', count = 2160640 },
+  { engine = '.*', count = 4_382_592 },
+]
 engines = [
   'go/regexp',
   'pcre2/jit',
   'python/regex',
   're2',
+  're2j',
   'rust/regex',
   'rust/regexold',
   'rust/regex/lite',
@@ -54,6 +60,8 @@ regex = '\p{L}{100}'
 haystack = { path = "unicode/allcodepoints.txt" }
 unicode = true
 count = [
+  # RE2/J 1.8 uses Unicode 6.0 tables.
+  { engine = '^re2j$', count = 930 },
   # Very likely due to update to Unicode 15.1.
   { engine = '^re2$', count = 1250 },
   # Very likely due to update to Unicode 16.
@@ -67,6 +75,7 @@ engines = [
   'pcre2/jit',
   'python/regex',
   're2',
+  're2j',
   'rust/regex',
   'rust/regexold',
 ]
@@ -166,6 +175,8 @@ regex = '\p{Greek}+'
 haystack = { path = "unicode/allcodepoints.txt" }
 unicode = true
 count = [
+  # RE2/J 1.8 uses Unicode 6.0 tables.
+  { engine = '^re2j$', count = 33 },
   # Perhaps a different version of Unicode?
   { engine = 'pcre2.*', count = 44 },
   { engine = '.*', count = 36 },
@@ -176,6 +187,7 @@ engines = [
   'pcre2/jit',
   'python/regex',
   're2',
+  're2j',
   'rust/regex',
   'rust/regexold',
 ]

@@ -51,6 +51,7 @@ engines = [
   'pcre2/jit',
   'python/re',
   're2',
+  're2j',
   'regress',
   'rust/regex',
   'rust/regex/backtrack',

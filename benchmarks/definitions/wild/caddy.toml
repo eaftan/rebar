@@ -13,6 +13,7 @@ engines = [
   'rust/regexold',
   'regress',
   're2',
+  're2j',
   'go/regexp',
   'pcre2/jit',
   'pcre2',

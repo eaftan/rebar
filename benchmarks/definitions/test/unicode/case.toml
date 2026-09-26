@@ -17,7 +17,7 @@ case-insensitive = true
 haystack = 'ſ'
 count = [
   # None of these engines support disabling Unicode-aware case insensitivity.
-  { engine = 'd/dmd/std-regex|go/regexp|icu|regress', count = 1 },
+  { engine = 'd/dmd/std-regex|go/regexp|icu|re2j|regress', count = 1 },
   { engine = '.*', count = 0 },
 ]
 engines = [
@@ -36,6 +36,7 @@ engines = [
   'python/re',
   'python/regex',
   're2',
+  're2j',
   'regress',
   'rust/regex',
   'rust/regex/lite',
@@ -73,6 +74,7 @@ engines = [
   'python/re',
   'python/regex',
   're2',
+  're2j',
   'regress',
   'rust/regex',
   'rust/regex/lite',
@@ -106,6 +108,7 @@ engines = [
   'python/re',
   'python/regex',
   're2',
+  're2j',
   'regress',
   'rust/regex',
   'rust/regex/lite',

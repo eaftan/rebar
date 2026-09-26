@@ -22,6 +22,7 @@ engines = [
   'pcre2/jit',
   # Does it!
   're2',
+  're2j',
   # Does not.
   # See: https://github.com/golang/go/issues/21743
   'go/regexp',

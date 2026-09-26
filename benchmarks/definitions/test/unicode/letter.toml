@@ -33,6 +33,7 @@ engines = [
   'perl',
   'python/regex',
   're2',
+  're2j',
   'rust/regex',
 ]
 analysis = '''
@@ -71,6 +72,7 @@ engines = [
   'perl',
   'python/regex',
   're2',
+  're2j',
   'regress',
   'rust/regex',
 ]
@@ -109,6 +111,7 @@ engines = [
   'perl',
   'python/regex',
   're2',
+  're2j',
   'regress',
   'rust/regex',
 ]

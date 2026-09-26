@@ -14,6 +14,7 @@ regex = 'Sherlock Holmes'
 haystack = { path = "opensubtitles/en-huge.txt" }
 count = 1
 engines = [
+  're2j',
   'hyperscan',
   'rust/regex',
   'rust/regexold',
@@ -26,6 +27,7 @@ regex = 'Sherlock Holmes'
 haystack = { path = "opensubtitles/en-huge.txt" }
 count = 15
 engines = [
+  're2j',
   'hyperscan',
   'rust/regex',
   'rust/regexold',
@@ -39,6 +41,7 @@ case-insensitive = true
 haystack = { path = "opensubtitles/en-huge.txt" }
 count = 1
 engines = [
+  're2j',
   'hyperscan',
   'rust/regex',
   'rust/regexold',
@@ -52,6 +55,7 @@ case-insensitive = true
 haystack = { path = "opensubtitles/en-huge.txt" }
 count = 15
 engines = [
+  're2j',
   'hyperscan',
   'rust/regex',
   'rust/regexold',
@@ -65,6 +69,7 @@ haystack = { path = "opensubtitles/ru-huge.txt" }
 unicode = true
 count = 1
 engines = [
+  're2j',
   'hyperscan',
   'rust/regex',
   'rust/regexold',
@@ -76,8 +81,13 @@ name = "literal-russian-som"
 regex = 'Шерлок Холмс'
 haystack = { path = "opensubtitles/ru-huge.txt" }
 unicode = true
-count = 23
+count = [
+  # RE2/J reports UTF-16 code units instead of UTF-8 bytes.
+  { engine = 're2j', count = 12 },
+  { engine = '.*', count = 23 },
+]
 engines = [
+  're2j',
   'hyperscan',
   'rust/regex',
   'rust/regexold',
@@ -92,6 +102,7 @@ unicode = true
 haystack = { path = "opensubtitles/ru-huge.txt" }
 count = 1
 engines = [
+  're2j',
   'hyperscan',
   'rust/regex',
   'rust/regexold',
@@ -104,8 +115,13 @@ regex = 'Шерлок Холмс'
 case-insensitive = true
 unicode = true
 haystack = { path = "opensubtitles/ru-huge.txt" }
-count = 23
+count = [
+  # RE2/J reports UTF-16 code units instead of UTF-8 bytes.
+  { engine = 're2j', count = 12 },
+  { engine = '.*', count = 23 },
+]
 engines = [
+  're2j',
   'hyperscan',
   'rust/regex',
   'rust/regexold',
@@ -118,6 +134,7 @@ regex = '\w+\s+Holmes'
 haystack = { path = "sherlock.txt" }
 count = 319
 engines = [
+  're2j',
   'hyperscan',
   'rust/regex',
   'rust/regexold',
@@ -130,6 +147,7 @@ regex = '\w+\s+Holmes'
 haystack = { path = "sherlock.txt" }
 count = 4073
 engines = [
+  're2j',
   'hyperscan',
   'rust/regex',
   'rust/regexold',
@@ -146,6 +164,7 @@ regex = '\b\w+\s+Holmes\s+\w+\b'
 haystack = { path = "sherlock.txt" }
 count = 137
 engines = [
+  're2j',
   'hyperscan',
   'rust/regex',
   'rust/regexold',
@@ -158,6 +177,7 @@ regex = '\b\w+\s+Holmes\s+\w+\b'
 haystack = { path = "sherlock.txt" }
 count = 2593
 engines = [
+  're2j',
   'hyperscan',
   'rust/regex',
   'rust/regexold',
@@ -172,6 +192,7 @@ regex = '\w{5}\s\w{6}\s\w{7}'
 haystack = { path = "sherlock.txt" }
 count = 120
 engines = [
+  're2j',
   'hyperscan',
   'rust/regex',
   'rust/regexold',
@@ -184,6 +205,7 @@ regex = '\w{5}\s\w{6}\s\w{7}'
 haystack = { path = "sherlock.txt" }
 count = 2400
 engines = [
+  're2j',
   'hyperscan',
   'rust/regex',
   'rust/regexold',
@@ -201,6 +223,7 @@ unicode = true
 haystack = { path = "sherlock.txt" }
 count = 120
 engines = [
+  're2j',
   'hyperscan',
   'rust/regex',
   'rust/regexold',

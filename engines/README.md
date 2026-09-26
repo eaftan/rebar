@@ -4,6 +4,9 @@ rebar. Some runner programs provide measurements for multiple regex engines
 library `re` module and the third party `regex` module) while other runner
 programs provide measurements for just one regex engine.
 
+The [RE2/J runner](re2j/README.md) uses Maven and JMH, following the Java
+benchmark setup described in its README.
+
 Every runner program works by accepting a benchmark definition in the [KLV
 format](../KLV.md) on `stdin`, gathering samples for the corresponding
 [benchmark model](../MODELS.md) repeatedly, and printing each sample on
