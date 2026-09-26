@@ -44,7 +44,12 @@ record BenchmarkConfig(
         // Rebar uses the name to identify the result outside this process.
         case "name" -> {}
         case "model" -> model = entry.value(decoder);
-        case "pattern" -> pattern = entry.value(decoder);
+        case "pattern" -> {
+          if (pattern != null) {
+            throw new IllegalArgumentException("SafeRE runner does not support multiple patterns");
+          }
+          pattern = entry.value(decoder);
+        }
         case "case-insensitive" -> caseInsensitive = entry.value(decoder).equals("true");
         case "unicode" -> unicode = entry.value(decoder).equals("true");
         case "haystack" -> {

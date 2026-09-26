@@ -10,6 +10,9 @@ regex = ''
 haystack = { path = "rust-src-tools-3b0d4813.txt" }
 count = 239_963
 engines = [
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
   'go/regexp',
   'pcre2/jit',
   'python/re',

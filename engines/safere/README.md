@@ -34,7 +34,9 @@ module is required to run `safere/utf8-vector`.
 All three engines reject invalid UTF-8 haystacks. The String engine decodes the
 haystack before timing; the UTF-8 engines validate it once before timing and
 then searches borrowed byte views. UTF-8 grep splits lines over the original
-bytes and uses SafeRE's capture-free `Pattern.find(Utf8Input)` for boolean
+bytes at LF, strips one trailing CR, and preserves embedded bare CR. String
+grep follows the same line rules. UTF-8 grep uses SafeRE's capture-free
+`Pattern.find(Utf8Input)` for boolean
 line checks. UTF-8 regex-redux performs replacements through `Utf8Sink`.
 `count-spans` sums UTF-16 code units for the String engine and bytes for the
 UTF-8 engine, so Rebar uses engine-specific expected counts where needed.
@@ -65,6 +67,11 @@ reflect variation across forks.
 SafeRE is intentionally omitted from curated compilation benchmarks for the
 same reason `java/hotspot` is omitted. Patterns using unsupported syntax, such
 as backreferences or lookaround, are also excluded.
+
+The [workload comparison](WORKLOADS.md) documents the current differences
+against RE2/J 1.8 and explains each engine-specific workload exclusion.
+Each SafeRE mode selects 275 workloads. The runner explicitly rejects
+multi-pattern input instead of silently measuring its last pattern.
 
 [SafeRE]: https://github.com/eaftan/safere
 [JMH]: https://github.com/openjdk/jmh

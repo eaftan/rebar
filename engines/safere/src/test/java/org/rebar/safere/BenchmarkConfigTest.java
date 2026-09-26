@@ -59,6 +59,16 @@ final class BenchmarkConfigTest {
         () -> BenchmarkConfig.parse(bytes.toByteArray(), InputMode.STRING));
   }
 
+  @Test
+  void rejectsMultiplePatterns() {
+    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+    bytes.writeBytes(validKlv(new byte[0]));
+    write(bytes, "pattern", "second");
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> BenchmarkConfig.parse(bytes.toByteArray(), InputMode.STRING));
+  }
+
   private static byte[] validKlv(byte[] haystack) {
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
     write(bytes, "model", "count");

@@ -182,10 +182,13 @@ name = "multiline-carriage-return"
 regex = '(?m:.)'
 haystack = "\r"
 count = [
-  { engine = '^(icu)$', count = 0 },
+  { engine = '^(icu|safere/.*)$', count = 0 },
   { engine = '.*', count = 1 },
 ]
 engines = [
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
   'dotnet',
   'dotnet/compiled',
   'dotnet/nobacktrack',

@@ -86,12 +86,14 @@ final class Utf8Workloads {
       int count = 0;
       for (int lineStart = 0; lineStart < haystack.length; ) {
         int lineEnd = lineStart;
-        while (lineEnd < haystack.length
-            && haystack[lineEnd] != '\n'
-            && haystack[lineEnd] != '\r') {
+        while (lineEnd < haystack.length && haystack[lineEnd] != '\n') {
           lineEnd++;
         }
-        Utf8Input line = Utf8Input.trusted(haystack, lineStart, lineEnd - lineStart);
+        int contentEnd = lineEnd;
+        if (contentEnd > lineStart && haystack[contentEnd - 1] == '\r') {
+          contentEnd--;
+        }
+        Utf8Input line = Utf8Input.trusted(haystack, lineStart, contentEnd - lineStart);
         if (captures) {
           Utf8Matcher matcher = pattern.matcher(line);
           while (matcher.find()) {
@@ -104,13 +106,7 @@ final class Utf8Workloads {
         } else if (pattern.find(line)) {
           count++;
         }
-        lineStart = lineEnd;
-        if (lineStart < haystack.length) {
-          byte separator = haystack[lineStart++];
-          if (separator == '\r' && lineStart < haystack.length && haystack[lineStart] == '\n') {
-            lineStart++;
-          }
-        }
+        lineStart = lineEnd < haystack.length ? lineEnd + 1 : lineEnd;
       }
       return count;
     };

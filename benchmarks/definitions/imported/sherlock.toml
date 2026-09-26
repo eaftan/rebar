@@ -514,6 +514,10 @@ regex = '.*'
 haystack = { path = "sherlock.txt" }
 unicode = true
 count = [
+  # SafeRE's dot excludes CR and other Java line terminators, not just LF.
+  { engine = 'safere/utf8(?:-vector)?', count = 568829 },
+  # SafeRE's String API reports UTF-16 code units.
+  { engine = 'safere/string', count = 568812 },
   # Probably UTF-16 discprenancy?
   { engine = 'd/.*/std-regex', count = 568_829 },
   # Probably UTF-16 discprenancy?
@@ -521,6 +525,9 @@ count = [
   { engine = '.*', count = 581_881 },
 ]
 engines = [
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
   'd/dmd/std-regex',
   'd/ldc/std-regex',
   'go/regexp',
@@ -553,8 +560,15 @@ name = "everything-greedy-nl"
 regex = '(?s).*'
 haystack = { path = "sherlock.txt" }
 unicode = true
-count = 594_933
+count = [
+  # SafeRE's String API reports UTF-16 code units.
+  { engine = 'safere/string', count = 594916 },
+  { engine = '.*', count = 594_933 },
+]
 engines = [
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
   'd/dmd/std-regex',
   'd/ldc/std-regex',
   'go/regexp',
@@ -573,8 +587,15 @@ name = "letters"
 regex = '\pL'
 haystack = { path = "sherlock.txt" }
 unicode = true
-count = 447_175
+count = [
+  # SafeRE's String API reports UTF-16 code units.
+  { engine = 'safere/string', count = 447160 },
+  { engine = '.*', count = 447_175 },
+]
 engines = [
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
   'd/dmd/std-regex',
   'd/ldc/std-regex',
   'go/regexp',
@@ -614,8 +635,15 @@ name = "letters-lower"
 regex = '\p{Ll}'
 haystack = { path = "sherlock.txt" }
 unicode = true
-count = 432_995
+count = [
+  # SafeRE's String API reports UTF-16 code units.
+  { engine = 'safere/string', count = 432980 },
+  { engine = '.*', count = 432_995 },
+]
 engines = [
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
   'd/dmd/std-regex',
   'd/ldc/std-regex',
   'go/regexp',
@@ -747,8 +775,15 @@ model = "count-spans"
 name = "quotes"
 regex = '''["'][^"']{0,30}[?!.]["']'''
 haystack = { path = "sherlock.txt" }
-count = 14_437
+count = [
+  # SafeRE's String API reports UTF-16 code units.
+  { engine = 'safere/string', count = 14436 },
+  { engine = '.*', count = 14_437 },
+]
 engines = [
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
   'd/dmd/std-regex',
   'd/ldc/std-regex',
   'go/regexp',
@@ -767,11 +802,16 @@ name = "line-boundary-sherlock-holmes"
 regex = '(?m)^Sherlock Holmes|Sherlock Holmes$'
 haystack = { path = "sherlock.txt" }
 count = [
+  # Java-style multiline anchors recognize CR and other line terminators.
+  { engine = 'safere/.*', count = 555 },
   #  Maybe UTF-16 discrepancy?
   { engine = 'd/.*/std-regex', count = 555 },
   { engine = '.*', count = 510 },
 ]
 engines = [
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
   'd/dmd/std-regex',
   'd/ldc/std-regex',
   'go/regexp',

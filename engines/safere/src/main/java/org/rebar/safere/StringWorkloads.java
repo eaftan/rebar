@@ -1,6 +1,7 @@
 package org.rebar.safere;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import org.safere.Matcher;
 import org.safere.Pattern;
 
@@ -84,7 +85,7 @@ final class StringWorkloads {
     Pattern pattern = config.compileRegex();
     return () -> {
       int count = 0;
-      Iterator<String> lines = config.haystack().lines().iterator();
+      Iterator<String> lines = lines(config.haystack());
       while (lines.hasNext()) {
         if (pattern.matcher(lines.next()).find()) {
           count++;
@@ -98,7 +99,7 @@ final class StringWorkloads {
     Pattern pattern = config.compileRegex();
     return () -> {
       int count = 0;
-      Iterator<String> lines = config.haystack().lines().iterator();
+      Iterator<String> lines = lines(config.haystack());
       while (lines.hasNext()) {
         Matcher matcher = pattern.matcher(lines.next());
         while (matcher.find()) {
@@ -110,6 +111,36 @@ final class StringWorkloads {
         }
       }
       return count;
+    };
+  }
+
+  // Rebar splits at LF and strips a final CR, preserving embedded bare CR.
+  private static Iterator<String> lines(String haystack) {
+    return new Iterator<>() {
+      private int offset;
+
+      @Override
+      public boolean hasNext() {
+        return offset < haystack.length();
+      }
+
+      @Override
+      public String next() {
+        if (!hasNext()) {
+          throw new NoSuchElementException();
+        }
+        int end = haystack.indexOf('\n', offset);
+        if (end < 0) {
+          end = haystack.length();
+        }
+        int contentEnd = end;
+        if (contentEnd > offset && haystack.charAt(contentEnd - 1) == '\r') {
+          contentEnd--;
+        }
+        String line = haystack.substring(offset, contentEnd);
+        offset = end < haystack.length() ? end + 1 : end;
+        return line;
+      }
     };
   }
 
