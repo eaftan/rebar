@@ -19,6 +19,9 @@ engines = [
   're2j',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -32,6 +35,9 @@ engines = [
   're2j',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]

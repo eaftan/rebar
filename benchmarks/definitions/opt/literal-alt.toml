@@ -43,6 +43,9 @@ engines = [
   # memory budget.
   're2',
   're2j',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]

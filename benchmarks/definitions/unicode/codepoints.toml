@@ -23,6 +23,9 @@ engines = [
   'rust/regex',
   'rust/regexold',
   'rust/regex/lite',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 analysis = '''
 A simple benchmark that matches each individual codepoint.
@@ -37,9 +40,14 @@ unicode = true
 count = [
   # RE2/J reports UTF-16 code units instead of UTF-8 bytes.
   { engine = 're2j', count = 2160640 },
+  # SafeRE's String API reports UTF-16 code units.
+  { engine = 'safere/string', count = 2160640 },
   { engine = '.*', count = 4_382_592 },
 ]
 engines = [
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
   'go/regexp',
   'pcre2/jit',
   'python/regex',
@@ -62,6 +70,8 @@ unicode = true
 count = [
   # RE2/J 1.8 uses Unicode 6.0 tables.
   { engine = '^re2j$', count = 930 },
+  # SafeRE 0.11.0's generated Unicode tables use the JDK 26 character data.
+  { engine = 'safere/.*', count = 1333 },
   # Very likely due to update to Unicode 15.1.
   { engine = '^re2$', count = 1250 },
   # Very likely due to update to Unicode 16.
@@ -71,6 +81,9 @@ count = [
   { engine = '.*', count = 1244 },
 ]
 engines = [
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
   'go/regexp',
   'pcre2/jit',
   'python/regex',

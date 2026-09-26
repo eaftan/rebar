@@ -43,6 +43,9 @@ engines = [
   're2j',
   'rust/regex',
   # 'rust/regexold', # timeout
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -62,4 +65,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]

@@ -30,6 +30,9 @@ engines = [
   'rust/memchr/memmem',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -52,6 +55,9 @@ engines = [
   'rust/memchr/memmem',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -74,6 +80,9 @@ engines = [
   'rust/memchr/memmem',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -96,6 +105,9 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -118,6 +130,9 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -140,6 +155,9 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -162,6 +180,9 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -183,6 +204,9 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -204,6 +228,9 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -225,6 +252,9 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -247,6 +277,9 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -268,6 +301,9 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -290,6 +326,9 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -311,6 +350,9 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -333,6 +375,9 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -354,6 +399,9 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -375,6 +423,9 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -396,6 +447,9 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -418,6 +472,9 @@ engines = [
   'rust/memchr/memmem',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -440,6 +497,9 @@ engines = [
   'rust/memchr/memmem',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -462,6 +522,9 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 # See everything-greedy-nl.
@@ -474,6 +537,10 @@ unicode = true
 count = [
   # RE2/J reports UTF-16 code units instead of UTF-8 bytes.
   { engine = 're2j', count = 581864 },
+  # SafeRE's dot excludes CR and other Java line terminators, not just LF.
+  { engine = 'safere/utf8(?:-vector)?', count = 568829 },
+  # SafeRE's String API reports UTF-16 code units.
+  { engine = 'safere/string', count = 568812 },
   # Probably UTF-16 discprenancy?
   { engine = 'd/.*/std-regex', count = 568_829 },
   # Probably UTF-16 discprenancy?
@@ -481,6 +548,9 @@ count = [
   { engine = '.*', count = 581_881 },
 ]
 engines = [
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
   'd/dmd/std-regex',
   'd/ldc/std-regex',
   'go/regexp',
@@ -517,9 +587,14 @@ unicode = true
 count = [
   # RE2/J reports UTF-16 code units instead of UTF-8 bytes.
   { engine = 're2j', count = 594916 },
+  # SafeRE's String API reports UTF-16 code units.
+  { engine = 'safere/string', count = 594916 },
   { engine = '.*', count = 594_933 },
 ]
 engines = [
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
   'd/dmd/std-regex',
   'd/ldc/std-regex',
   'go/regexp',
@@ -542,9 +617,14 @@ unicode = true
 count = [
   # RE2/J reports UTF-16 code units instead of UTF-8 bytes.
   { engine = 're2j', count = 447160 },
+  # SafeRE's String API reports UTF-16 code units.
+  { engine = 'safere/string', count = 447160 },
   { engine = '.*', count = 447_175 },
 ]
 engines = [
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
   'd/dmd/std-regex',
   'd/ldc/std-regex',
   'go/regexp',
@@ -575,6 +655,9 @@ engines = [
   're2j',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -586,9 +669,14 @@ unicode = true
 count = [
   # RE2/J reports UTF-16 code units instead of UTF-8 bytes.
   { engine = 're2j', count = 432980 },
+  # SafeRE's String API reports UTF-16 code units.
+  { engine = 'safere/string', count = 432980 },
   { engine = '.*', count = 432_995 },
 ]
 engines = [
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
   'd/dmd/std-regex',
   'd/ldc/std-regex',
   'go/regexp',
@@ -624,6 +712,9 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -645,6 +736,9 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -666,6 +760,9 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -687,6 +784,9 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -704,6 +804,9 @@ engines = [
   # 'regress', # timeout
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -714,9 +817,14 @@ haystack = { path = "sherlock.txt" }
 count = [
   # RE2/J reports UTF-16 code units instead of UTF-8 bytes.
   { engine = 're2j', count = 14436 },
+  # SafeRE's String API reports UTF-16 code units.
+  { engine = 'safere/string', count = 14436 },
   { engine = '.*', count = 14_437 },
 ]
 engines = [
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
   'd/dmd/std-regex',
   'd/ldc/std-regex',
   'go/regexp',
@@ -736,11 +844,16 @@ name = "line-boundary-sherlock-holmes"
 regex = '(?m)^Sherlock Holmes|Sherlock Holmes$'
 haystack = { path = "sherlock.txt" }
 count = [
+  # Java-style multiline anchors recognize CR and other line terminators.
+  { engine = 'safere/.*', count = 555 },
   #  Maybe UTF-16 discrepancy?
   { engine = 'd/.*/std-regex', count = 555 },
   { engine = '.*', count = 510 },
 ]
 engines = [
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
   'd/dmd/std-regex',
   'd/ldc/std-regex',
   'go/regexp',
@@ -772,6 +885,9 @@ engines = [
   're2j',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -793,6 +909,9 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -814,6 +933,9 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]
 
 [[bench]]
@@ -835,4 +957,7 @@ engines = [
   'regress',
   'rust/regex',
   'rust/regexold',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
 ]

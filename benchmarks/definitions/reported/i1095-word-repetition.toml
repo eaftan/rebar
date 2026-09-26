@@ -114,11 +114,16 @@ haystack = { contents = 'δ', repeat = 256 }
 count = [
   # RE2/J reports UTF-16 code units instead of UTF-8 bytes.
   { engine = 're2j', count = 256 },
+  # SafeRE's String API reports UTF-16 code units.
+  { engine = 'safere/string', count = 256 },
   # Spans are counted as either UTF-16 code units or Unicode scalar values.
   { engine = 'dotnet.*|icu|javascript.*|java/.*|perl', count = 256 },
   { engine = '.*', count = 512 },
 ]
 engines = [
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
   'dotnet',
   'dotnet/compiled',
   'dotnet/nobacktrack',
@@ -187,6 +192,9 @@ engines = [
   'hyperscan',
   'icu',
   'java/hotspot',
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
   'javascript/v8',
   'pcre2',
   'pcre2/jit',
