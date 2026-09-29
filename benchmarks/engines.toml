@@ -412,7 +412,7 @@
   [engine.version]
     bin = "java"
     args = ["-cp", "target/classes:target/dependency/*", "org.rebar.safere.Main", "string", "version"]
-    regex = '^SafeRE (?P<version>[0-9]+\.[0-9]+\.[0-9]+ \([^\n]+\))'
+    regex = '^SafeRE (?P<version>[0-9]+\.[0-9]+\.[0-9]+(?:-SNAPSHOT)? \([^\n]+\))'
   [engine.run]
     bin = "java"
     args = ["-cp", "target/classes:target/dependency/*", "org.rebar.safere.Main", "string"]
@@ -430,7 +430,7 @@
   [engine.version]
     bin = "java"
     args = ["-cp", "target/classes:target/dependency/*", "org.rebar.safere.Main", "utf8", "version"]
-    regex = '^SafeRE (?P<version>[0-9]+\.[0-9]+\.[0-9]+ \([^\n]+\))'
+    regex = '^SafeRE (?P<version>[0-9]+\.[0-9]+\.[0-9]+(?:-SNAPSHOT)? \([^\n]+\))'
   [engine.run]
     bin = "java"
     args = ["-cp", "target/classes:target/dependency/*", "org.rebar.safere.Main", "utf8"]
@@ -448,7 +448,7 @@
   [engine.version]
     bin = "java"
     args = ["--add-modules=jdk.incubator.vector", "-Dorg.safere.experimental.vectorScanProvider=vector", "-cp", "target/classes:target/dependency/*", "org.rebar.safere.Main", "utf8", "version"]
-    regex = '^SafeRE (?P<version>[0-9]+\.[0-9]+\.[0-9]+ \([^\n]+\))'
+    regex = '^SafeRE (?P<version>[0-9]+\.[0-9]+\.[0-9]+(?:-SNAPSHOT)? \([^\n]+\))'
   [engine.run]
     bin = "java"
     args = ["--add-modules=jdk.incubator.vector", "-Dorg.safere.experimental.vectorScanProvider=vector", "-cp", "target/classes:target/dependency/*", "org.rebar.safere.Main", "utf8"]
