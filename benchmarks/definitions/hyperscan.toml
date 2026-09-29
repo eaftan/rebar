@@ -99,15 +99,12 @@ unicode = true
 count = [
   # RE2/J reports UTF-16 code units instead of UTF-8 bytes.
   { engine = 're2j', count = 12 },
-  { engine = '.*', count = 23 },
-]
-engines = [
-  're2j',
   # SafeRE's String API reports UTF-16 code units.
   { engine = 'safere/string', count = 12 },
   { engine = '.*', count = 23 },
 ]
 engines = [
+  're2j',
   'safere/string',
   'safere/utf8',
   'safere/utf8-vector',
@@ -144,15 +141,12 @@ haystack = { path = "opensubtitles/ru-huge.txt" }
 count = [
   # RE2/J reports UTF-16 code units instead of UTF-8 bytes.
   { engine = 're2j', count = 12 },
-  { engine = '.*', count = 23 },
-]
-engines = [
-  're2j',
   # SafeRE's String API reports UTF-16 code units.
   { engine = 'safere/string', count = 12 },
   { engine = '.*', count = 23 },
 ]
 engines = [
+  're2j',
   'safere/string',
   'safere/utf8',
   'safere/utf8-vector',
