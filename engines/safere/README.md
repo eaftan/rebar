@@ -15,7 +15,7 @@ Maven Central to download SafeRE, JMH, and the Maven plugins. Rebar invokes
 Maven directly with `mvn -q clean verify`.
 
 `rebar build -e '^safere/(string|utf8|utf8-vector)$'` uses the
-`org.safere:safere:0.11.0` release, compiles the runner, copies its runtime
+`org.safere:safere:1.0.0` release, compiles the runner, copies its runtime
 dependencies to `target/dependency`, and runs the JUnit tests. To benchmark a
 newer SafeRE release, change the `org.safere:safere` dependency version in
 `pom.xml` and rebuild. Rebar's version command records the SafeRE version, JVM
