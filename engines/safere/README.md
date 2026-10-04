@@ -33,13 +33,14 @@ module is required to run `safere/utf8-vector`.
 
 All three engines reject invalid UTF-8 haystacks. The String engine decodes the
 haystack before timing; the UTF-8 engines validate it once before timing and
-then searches borrowed byte views. UTF-8 grep splits lines over the original
+then search borrowed byte views. UTF-8 grep splits lines over the original
 bytes at LF, strips one trailing CR, and preserves embedded bare CR. String
 grep follows the same line rules. UTF-8 grep uses SafeRE's capture-free
-`Pattern.find(Utf8Input)` for boolean
-line checks. UTF-8 regex-redux performs replacements through `Utf8Sink`.
+`Pattern.find(Utf8Input)` for boolean line checks. UTF-8 regex-redux performs
+replacements through `Utf8Sink`. Dot and multiline anchors follow Java's
+line-terminator semantics.
 `count-spans` sums UTF-16 code units for the String engine and bytes for the
-UTF-8 engine, so Rebar uses engine-specific expected counts where needed.
+UTF-8 engines, so Rebar uses engine-specific expected counts where needed.
 
 For normal measurements, the runner uses JMH `SampleTime` with one fork and one
 thread. It uses one warmup iteration for Rebar's full warmup time budget when
@@ -56,7 +57,7 @@ iteration when the warmup time budget is positive. Neither iteration limit
 bounds the number of invocations JMH performs within an iteration. With a zero
 measurement time budget, as in `rebar measure --test`, the runner uses the
 direct loop and still runs any configured warmup before its one measurement.
-The unused compilation model also retains the direct Rebar timing loop.
+The compilation model also uses the direct Rebar timing loop.
 
 The default 3-second measurement and 1.5-second warmup budgets yield one
 3-second measurement iteration and one 1.5-second warmup iteration. One fork
@@ -68,10 +69,8 @@ SafeRE is intentionally omitted from curated compilation benchmarks for the
 same reason `java/hotspot` is omitted. Patterns using unsupported syntax, such
 as backreferences or lookaround, are also excluded.
 
-The [workload comparison](WORKLOADS.md) documents the current differences
-against RE2/J 1.8 and explains each engine-specific workload exclusion.
-Each SafeRE mode selects 275 workloads. The runner explicitly rejects
-multi-pattern input instead of silently measuring its last pattern.
+Each SafeRE mode selects 275 workloads. The runner does not support
+multi-pattern workloads.
 
 [SafeRE]: https://github.com/eaftan/safere
 [JMH]: https://github.com/openjdk/jmh

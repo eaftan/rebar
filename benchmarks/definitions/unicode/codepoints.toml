@@ -64,7 +64,7 @@ regex = '\p{L}{100}'
 haystack = { path = "unicode/allcodepoints.txt" }
 unicode = true
 count = [
-  # SafeRE 0.11.0's generated Unicode tables use the JDK 26 character data.
+  # SafeRE uses bundled Unicode property tables independent of the running JDK.
   { engine = 'safere/.*', count = 1333 },
   # Very likely due to update to Unicode 15.1.
   { engine = '^re2$', count = 1250 },
