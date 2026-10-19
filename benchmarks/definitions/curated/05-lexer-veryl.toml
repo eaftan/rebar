@@ -114,6 +114,9 @@ regex = { path = "wild/parol-veryl.txt", per-line = "alternate" }
 haystack = 'abcdefg_foobar'
 count = 1
 engines = [
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
   'dotnet/compiled',
   'go/regexp',
   'icu',

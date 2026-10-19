@@ -42,6 +42,12 @@ line-terminator semantics.
 `count-spans` sums UTF-16 code units for the String engine and bytes for the
 UTF-8 engines, so Rebar uses engine-specific expected counts where needed.
 
+Search measurements use JMH to provide a generated measurement harness,
+explicit JVM warmup, and a separate JVM for each workload. JMH consumes each
+invocation's result to prevent dead-code elimination. This reduces sensitivity
+to JIT compilation and the runner's own timing loop, although results can
+still vary between JVM runs.
+
 For normal measurements, the runner uses JMH `SampleTime` with one fork and one
 thread. It uses one warmup iteration for Rebar's full warmup time budget when
 warmup is enabled, then one measurement iteration for the full measurement
@@ -65,12 +71,23 @@ helps each workload fit Rebar's default 10-second process timeout, but
 independent forks would give better evidence about JVM startup variation.
 Rebar aggregates the JMH sampled invocations, so its summary statistics do not
 reflect variation across forks.
-SafeRE is intentionally omitted from curated compilation benchmarks for the
-same reason `java/hotspot` is omitted. Patterns using unsupported syntax, such
-as backreferences or lookaround, are also excluded.
 
-Each SafeRE mode selects 275 workloads. The runner does not support
-multi-pattern workloads.
+Supported single-pattern curated compilation benchmarks are included.
+Compilation uses the direct timing loop to measure `Pattern.compile`, with
+match-count verification outside the measured interval. These measurements
+report warmed compilation costs; SafeRE parses and compiles a new pattern
+on each invocation. Nosey Parker's compilation pattern exceeds SafeRE's
+supported repetition limit and remains excluded. Patterns using unsupported
+syntax, such as backreferences or lookaround, are also excluded.
+
+Each SafeRE mode selects 286 workloads. Multi-pattern workloads remain
+excluded because SafeRE's `PatternSet` API returns the IDs of matching
+patterns, not individual match occurrences or their offsets. Counting these
+IDs would count matching patterns rather than the occurrences required by
+Rebar's `count` model, and the API does not expose the match bounds required
+by `count-spans`. Supporting these benchmarks would therefore require an
+API extension or an adapter that performs additional searches with individual
+matchers.
 
 [SafeRE]: https://github.com/eaftan/safere
 [JMH]: https://github.com/openjdk/jmh

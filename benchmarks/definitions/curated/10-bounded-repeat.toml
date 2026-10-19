@@ -177,6 +177,9 @@ regex = '[A-Za-z]{10}\s+[\s\S]{0,100}Result[\s\S]{0,100}\s+[A-Za-z]{10}'
 haystack = 'abcdefghij blah blah blah Result blib blab klmnopqrst'
 count = 1
 engines = [
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
   'dotnet/compiled',
   'dotnet/nobacktrack',
   'go/regexp',
@@ -205,6 +208,9 @@ count = [
   { engine = '.*', count = 1 },
 ]
 engines = [
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
   'dotnet/compiled',
   'dotnet/nobacktrack',
   'go/regexp',

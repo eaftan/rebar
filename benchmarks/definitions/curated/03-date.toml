@@ -173,6 +173,9 @@ count = [
   { engine = '.*', count = 5 },
 ]
 engines = [
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
   'go/regexp',
   'hyperscan',
   'icu',
@@ -207,6 +210,9 @@ count = [
   { engine = '.*', count = 5 },
 ]
 engines = [
+  'safere/string',
+  'safere/utf8',
+  'safere/utf8-vector',
   'dotnet/compiled',
   'icu',
   'pcre2',
