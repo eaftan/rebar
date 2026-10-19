@@ -50,9 +50,7 @@ The runner includes 23 compatible compilation performance workloads plus
 method that returns the result of `Pattern.compile` for JMH to consume.
 Match-count verification runs in the parent process and the fork's setup,
 outside the measured method. These measurements report warmed compilation
-costs; each invocation parses and compiles a new pattern. Unsupported
-syntax, multi-pattern inputs, and incompatible search semantics remain
-excluded; see [WORKLOADS.md](WORKLOADS.md).
+costs; each invocation parses and compiles a new pattern.
 
 To measure compilation workloads:
 
@@ -85,9 +83,18 @@ RE2/J 1.8's generated character-property tables use Unicode 6.0. This can
 change counts relative to engines with newer Unicode tables.
 
 Multiple-pattern workloads are rejected rather than combining patterns or
-silently using only the last. Unsupported syntax and incompatible workload
-semantics are excluded based on the full correctness sweep; see
-[WORKLOADS.md](WORKLOADS.md) for the audit.
+silently using only the last. Workloads requiring unsupported syntax or
+incompatible semantics are excluded in the
+[benchmark definitions](../../benchmarks/definitions). Examples include
+Unicode Perl classes and boundaries, extended-mode `(?x)` patterns, and
+Nosey Parker patterns with repetitions exceeding RE2/J's supported limit.
+
+Very large dictionary alternations can cause a `StackOverflowError` in
+RE2/J 1.8's `Machine.add` during matching. The full-dictionary workloads
+`dictionary/compile/english`, `dictionary/search/english`, and
+`dictionary/search/english-tiny` remain excluded. This also affects compilation
+benchmarks because their compiled patterns must pass an untimed verification
+search.
 
 [RE2/J]: https://github.com/google/re2j
 [JMH]: https://github.com/openjdk/jmh
