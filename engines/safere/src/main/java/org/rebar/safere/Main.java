@@ -106,8 +106,8 @@ public final class Main {
 
   private static void runJmh(byte[] raw, BenchmarkConfig config, InputMode mode, int count)
       throws Exception {
-    Path input = Files.createTempFile("rebar-safere-", ".klv");
-    Path output = Files.createTempFile("rebar-safere-jmh-", ".log");
+    Path input = createTempFile("rebar-safere-", ".klv");
+    Path output = createTempFile("rebar-safere-jmh-", ".log");
     try {
       Files.write(input, raw);
       int warmupIterations = config.maxWarmupIters() > 0 && config.maxWarmupTime() > 0 ? 1 : 0;
@@ -147,6 +147,14 @@ public final class Main {
       Files.deleteIfExists(input);
       Files.deleteIfExists(output);
     }
+  }
+
+  static Path createTempFile(String prefix, String suffix) throws Exception {
+    Path path = Files.createTempFile(prefix, suffix);
+    // Termination signals do not unwind runJmh's finally block. Register
+    // shutdown cleanup immediately, including if creating the second file fails.
+    path.toFile().deleteOnExit();
+    return path;
   }
 
   static void emitSamples(Statistics statistics, long maxIters, int count, PrintStream output)

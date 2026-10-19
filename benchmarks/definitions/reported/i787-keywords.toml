@@ -46,6 +46,7 @@ regex = { path = "reported/i787-keywords.txt", per-line = "alternate", prepend =
 haystack = "f64"
 count = 1
 engines = [
+  're2j',
   'go/regexp',
   'hyperscan',
   'pcre2/jit',

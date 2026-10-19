@@ -33,6 +33,7 @@ haystack = "Zubeneschamali's"
 unicode = true
 count = 1
 engines = [
+  're2j',
   'go/regexp',
   're2',
   'rust/regex',
@@ -50,6 +51,7 @@ haystack = "Zubeneschamali's"
 unicode = true
 count = 1
 engines = [
+  're2j',
   'go/regexp',
   're2',
   'regress',

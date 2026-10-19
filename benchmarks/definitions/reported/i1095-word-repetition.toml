@@ -81,6 +81,7 @@ unicode = true
 haystack = { contents = 'δ', repeat = 256 }
 count = 1
 engines = [
+  're2j',
   'dotnet',
   'dotnet/compiled',
   'dotnet/nobacktrack',
@@ -157,6 +158,7 @@ unicode = false
 haystack = { contents = 'b', repeat = 256 }
 count = 1
 engines = [
+  're2j',
   'dotnet',
   'dotnet/compiled',
   'dotnet/nobacktrack',

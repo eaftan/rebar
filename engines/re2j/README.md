@@ -1,6 +1,7 @@
 This runner benchmarks [RE2/J], a pure Java port of RE2, as the `re2j`
 engine. It uses RE2/J's String API and [JMH], following the Maven and
-measurement setup of [the SafeRE runner PR][safere-pr].
+measurement setup of [the SafeRE runner](../safere/README.md). The runners
+are maintained separately so SafeRE can be contributed upstream independently.
 
 ## Build
 
@@ -21,7 +22,7 @@ RE2/J dependency version and the JVM name and version.
 
 ## Measurements
 
-Search measurements use JMH 1.37 `SampleTime` with one fork and one thread.
+Measurements use JMH 1.37 `SampleTime` with one fork and one thread.
 The runner maps a positive Rebar measurement time budget to one JMH measurement
 iteration of that duration. A positive warmup time budget enables one warmup
 iteration when `max-warmup-iters` is positive. Parsing, UTF-8 decoding,
@@ -40,14 +41,25 @@ Rebar isolates runner process trees and terminates them on timeout or
 interruption, so the JMH child JVM cannot continue running after its runner
 is stopped.
 
-A zero measurement budget, including `rebar measure --test`, uses the
-reference runner's direct timing loop. The `compile` model also uses this
-loop: it times only compilation and verifies the compiled pattern afterwards.
-Compilation timings are subject to JVM JIT effects, as discussed for the
-[existing Java runner](../java/README.md).
-Compilation performance workloads are excluded for this reason, following
-SafeRE and `java/hotspot`. Only `test/model/compile` remains enabled as a
-basic compilation correctness check.
+A zero measurement budget, including `rebar measure --test`, uses this
+runner's direct timing loop and still runs any configured warmup before its
+one measurement.
+
+The runner includes 23 compatible compilation performance workloads plus
+`test/model/compile`. Like SafeRE, compilation uses a separate JMH benchmark
+method that returns the result of `Pattern.compile` for JMH to consume.
+Match-count verification runs in the parent process and the fork's setup,
+outside the measured method. These measurements report warmed compilation
+costs; each invocation parses and compiles a new pattern.
+
+To measure compilation workloads:
+
+```
+rebar measure -e '^re2j$' -m '^compile$' --timeout 60s
+```
+
+The longer timeout accommodates the large dictionary workload's compilation
+and untimed verification search.
 
 For a short JMH smoke test:
 
@@ -71,10 +83,18 @@ RE2/J 1.8's generated character-property tables use Unicode 6.0. This can
 change counts relative to engines with newer Unicode tables.
 
 Multiple-pattern workloads are rejected rather than combining patterns or
-silently using only the last. Unsupported syntax and incompatible workload
-semantics are excluded based on the full correctness sweep; see
-[WORKLOADS.md](WORKLOADS.md) for the audit.
+silently using only the last. Workloads requiring unsupported syntax or
+incompatible semantics are excluded in the
+[benchmark definitions](../../benchmarks/definitions). Examples include
+Unicode Perl classes and boundaries, extended-mode `(?x)` patterns, and
+Nosey Parker patterns with repetitions exceeding RE2/J's supported limit.
+
+Very large dictionary alternations can cause a `StackOverflowError` in
+RE2/J 1.8's `Machine.add` during matching. The full-dictionary workloads
+`dictionary/compile/english`, `dictionary/search/english`, and
+`dictionary/search/english-tiny` remain excluded. This also affects compilation
+benchmarks because their compiled patterns must pass an untimed verification
+search.
 
 [RE2/J]: https://github.com/google/re2j
 [JMH]: https://github.com/openjdk/jmh
-[safere-pr]: https://github.com/eaftan/rebar/pull/1

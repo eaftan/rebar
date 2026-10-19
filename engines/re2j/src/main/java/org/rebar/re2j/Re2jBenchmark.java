@@ -1,5 +1,6 @@
 package org.rebar.re2j;
 
+import com.google.re2j.Pattern;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -19,6 +20,7 @@ public class Re2jBenchmark {
   @Param("0")
   public int expectedCount;
 
+  private BenchmarkConfig config;
   private Workloads.Workload workload;
 
   /**
@@ -28,9 +30,15 @@ public class Re2jBenchmark {
    */
   @Setup
   public void setup() throws Exception {
-    workload =
-        StringWorkloads.create(BenchmarkConfig.parse(Files.readAllBytes(Path.of(inputPath))));
-    int actual = workload.run();
+    config = BenchmarkConfig.parse(Files.readAllBytes(Path.of(inputPath)));
+    int actual;
+    if (config.model().equals("compile")) {
+      Pattern pattern = config.compileRegex();
+      actual = StringWorkloads.countMatches(pattern, config.haystack());
+    } else {
+      workload = StringWorkloads.create(config);
+      actual = workload.run();
+    }
     if (actual != expectedCount) {
       throw new IllegalStateException(
           "JMH fork count " + actual + " differed from " + expectedCount);
@@ -46,5 +54,15 @@ public class Re2jBenchmark {
   @Benchmark
   public int run() throws Exception {
     return workload.run();
+  }
+
+  /**
+   * Compiles a fresh pattern without searching the verification haystack.
+   *
+   * @return the compiled pattern consumed by JMH
+   */
+  @Benchmark
+  public Pattern compile() {
+    return config.compileRegex();
   }
 }

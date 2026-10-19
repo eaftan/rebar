@@ -159,6 +159,7 @@ regex = { path = "dictionary/english/length-15.txt", literal = true, per-line = 
 haystack = "Zubeneschamali's"
 count = 1
 engines = [
+  're2j',
   'safere/string',
   'safere/utf8',
   'safere/utf8-vector',

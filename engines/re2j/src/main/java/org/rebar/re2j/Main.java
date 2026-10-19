@@ -44,26 +44,33 @@ public final class Main {
     byte[] raw = System.in.readAllBytes();
     BenchmarkConfig config = BenchmarkConfig.parse(raw);
     if (config.model().equals("compile")) {
-      for (Sample sample :
-          sampleDirect(
-              config,
-              config::compileRegex,
-              pattern -> StringWorkloads.countMatches(pattern, config.haystack()))) {
-        System.out.printf("%d,%d%n", sample.duration(), sample.count());
-      }
-      return;
+      runBenchmark(
+          raw,
+          config,
+          config::compileRegex,
+          pattern -> StringWorkloads.countMatches(pattern, config.haystack()));
+    } else {
+      Workloads.Workload workload = StringWorkloads.create(config);
+      runBenchmark(raw, config, workload::run, Integer::intValue);
     }
+  }
 
-    Workloads.Workload workload = StringWorkloads.create(config);
+  private static <T> void runBenchmark(
+      byte[] raw,
+      BenchmarkConfig config,
+      Callable<T> operation,
+      ToIntFunction<T> count)
+      throws Exception {
     // A zero measurement budget still runs one operation for its count.
     if (config.maxTime() == 0) {
-      for (Sample sample : sampleDirect(config, workload::run, Integer::intValue)) {
+      for (Sample sample : sampleDirect(config, operation, count)) {
         System.out.printf("%d,%d%n", sample.duration(), sample.count());
       }
-      return;
+    } else {
+      T result = operation.call();
+      int expectedCount = count.applyAsInt(result);
+      runJmh(raw, config, expectedCount);
     }
-    int count = workload.run();
-    runJmh(raw, config, count);
   }
 
   private static void printVersion() throws Exception {
@@ -92,9 +99,10 @@ public final class Main {
     try {
       Files.write(input, raw);
       int warmupIterations = config.maxWarmupIters() > 0 && config.maxWarmupTime() > 0 ? 1 : 0;
+      String method = config.model().equals("compile") ? "compile" : "run";
       var optionsBuilder =
           new OptionsBuilder()
-              .include("^" + Re2jBenchmark.class.getName() + ".run$")
+              .include("^" + Re2jBenchmark.class.getName() + "." + method + "$")
               .mode(Mode.SampleTime)
               .timeUnit(TimeUnit.NANOSECONDS)
               .forks(1)

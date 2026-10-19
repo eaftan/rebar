@@ -25,6 +25,7 @@ unicode = false
 haystack = '!+[]'
 count = 1
 engines = [
+  're2j',
   're2',
   'rust/regex',
   'rust/regex/ast',
@@ -47,6 +48,7 @@ unicode = false
 haystack = 'between word('
 count = 1
 engines = [
+  're2j',
   're2',
   'rust/regex',
   'rust/regex/ast',

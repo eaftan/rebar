@@ -21,6 +21,7 @@ count = [
   { engine = '.*', count = 1 },
 ]
 engines = [
+  're2j',
   'go/regexp',
   'hyperscan',
   'pcre2',
