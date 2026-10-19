@@ -45,9 +45,21 @@ reference runner's direct timing loop. The `compile` model also uses this
 loop: it times only compilation and verifies the compiled pattern afterwards.
 Compilation timings are subject to JVM JIT effects, as discussed for the
 [existing Java runner](../java/README.md).
-Compilation performance workloads are excluded for this reason, following
-SafeRE and `java/hotspot`. Only `test/model/compile` remains enabled as a
-basic compilation correctness check.
+The runner includes 23 compatible compilation performance workloads plus
+`test/model/compile`. Like SafeRE, these report warmed compilation costs:
+each invocation parses and compiles a new pattern with `Pattern.compile`,
+and match-count verification runs outside the measured interval. Unsupported
+syntax, multi-pattern inputs, and incompatible search semantics remain
+excluded; see [WORKLOADS.md](WORKLOADS.md).
+
+To measure compilation workloads:
+
+```
+rebar measure -e '^re2j$' -m '^compile$' --timeout 60s
+```
+
+The longer timeout accommodates the large dictionary workload's compilation
+and untimed verification search.
 
 For a short JMH smoke test:
 

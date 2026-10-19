@@ -1,7 +1,7 @@
 # RE2/J workload eligibility
 
-The initial RE2/J 1.8 correctness sweep enabled all 360 workload definitions:
-264 passed and 96 failed. Failures were investigated before removing entries.
+The initial RE2/J 1.8 correctness sweep investigated failures before removing
+incompatible entries.
 
 28 initially failing workloads were retained after fixes:
 
@@ -16,30 +16,35 @@ The initial RE2/J 1.8 correctness sweep enabled all 360 workload definitions:
   The 930 hundred-letter matches and 33 Greek runs were independently checked
   against [the release's generated tables][tables].
 
-The remaining 68 workloads are excluded below. The three full-dictionary
+The 68 incompatible workloads are excluded below. The three full-dictionary
 timeouts were retried with a 60-second timeout; all reached a
 `StackOverflowError` in RE2/J's `Machine.add`, including the compilation
 model's untimed verification search. No workload was excluded solely because
 it exceeded the initial 10-second timeout.
 
-The compatibility sweep passed all 292 selected workloads, including 27
-compilation workloads. After that sweep, 26 compilation performance workloads
-were also removed to follow SafeRE and `java/hotspot`'s measurement policy:
-repeated compilation of invariant patterns can produce misleading JVM timings.
-These are policy exclusions, not regex incompatibilities.
+Compilation performance workloads were initially removed under the older JVM
+measurement policy. The 23 compatible workloads are now enabled, following
+SafeRE's inclusion of compilation benchmarks. The selection is 289 workloads:
+265 search workloads, 23 compilation performance workloads, and the basic
+`test/model/compile` correctness check. Compilation uses the direct timing
+loop and verifies matches outside the measured interval; these are warmed JVM
+compilation costs, as described in [README.md](README.md).
 
-The final selection is 266 workloads. The only remaining compilation workload,
-`test/model/compile`, checks basic correctness using the reference runner's
-direct loop; see [README.md](README.md).
+Three additional compilation workloads in `reported/p893-hir-case-folding`
+remain restricted to `rust/regex/hir`: they benchmark Rust's AST-to-HIR
+translation, including character-class subtraction. Earlier audit totals
+overcounted RE2/J's selection by including these Rust-only workloads.
 
-A subsequent [bidirectional SafeRE comparison](SAFERE_COMPARISON.md) verified
+A subsequent [bidirectional SafeRE comparison](SAFERE_COMPARISON.md), before
+compilation performance workloads were enabled in either engine, verified
 all 23 initial differences and then tested SafeRE on every non-compilation
 workload. It added 16 missing SafeRE workloads in total and verified the
 remaining two RE2/J-only and eleven SafeRE-only exclusions.
 
 ## Verification
 
-Checks used OpenJDK 26.0.1 and Maven 3.9.16, compiling with Java release 21:
+The original checks used OpenJDK 26.0.1 and Maven 3.9.16, compiling with Java
+release 21:
 
 - `cargo build --locked`
 - `cargo test --locked` (19 tests, including process-tree cleanup on timeout
@@ -53,6 +58,13 @@ Checks used OpenJDK 26.0.1 and Maven 3.9.16, compiling with Java release 21:
 - Timeout and interruption checks leave no temporary KLV or JMH log files
   on Unix, where shutdown cleanup backs up the normal-path cleanup.
 - `git diff --check`
+
+Compilation workload inclusion was checked with OpenJDK 26.0.2 and Maven
+3.9.14: Maven clean/verify passed all eight JUnit tests, and all 24 selected
+compilation workloads passed `rebar measure -e '^re2j$' -m '^compile$' --test`.
+Positive-budget measurements used 100ms measurement and warmup budgets,
+at most five reported samples, and a 60-second timeout to accommodate the
+large dictionary workload's compilation and untimed verification search.
 
 ## Incompatible workloads
 

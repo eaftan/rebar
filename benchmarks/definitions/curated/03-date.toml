@@ -173,6 +173,7 @@ count = [
   { engine = '.*', count = 5 },
 ]
 engines = [
+  're2j',
   'safere/string',
   'safere/utf8',
   'safere/utf8-vector',

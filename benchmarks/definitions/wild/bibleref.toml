@@ -19,6 +19,7 @@ II Ki. 3:12-14, 25
 unicode = true
 count = 3
 engines = [
+  're2j',
   'go/regexp',
   'pcre2/jit',
   'python/regex',

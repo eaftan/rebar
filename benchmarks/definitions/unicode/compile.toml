@@ -14,6 +14,7 @@ haystack = "ͱͳͷΐάέήίΰαβγδεζηθικλμνξοπρςστυφχψω
 unicode = true
 count = 53
 engines = [
+  're2j',
   'go/regexp',
   'hyperscan',
   'pcre2/jit',
@@ -36,6 +37,7 @@ haystack = "ͱͳͷΐάέήίΰαβγδεζηθικλμνξοπρςστυφχψω
 unicode = true
 count = 1
 engines = [
+  're2j',
   'go/regexp',
   'pcre2/jit',
   'python/regex',
@@ -73,6 +75,7 @@ count = [
   { engine = '.*', count = 1 },
 ]
 engines = [
+  're2j',
   'rust/regex',
   'rust/regex/dense',
   'rust/regex/nfa',
@@ -143,6 +146,7 @@ unicode = true
 haystack = '☃'
 count = 1
 engines = [
+  're2j',
   'go/regexp',
   'hyperscan',
   'pcre2',

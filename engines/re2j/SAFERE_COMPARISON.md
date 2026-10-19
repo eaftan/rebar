@@ -1,9 +1,14 @@
 # SafeRE / RE2/J workload comparison
 
-RE2/J 1.8 supports 266 workloads. Each SafeRE 0.11.0 mode (`string`,
-`utf8`, and `utf8-vector`) supports the same 275 workloads.
-There are 264 shared workloads, two RE2/J-only workloads, and eleven
-SafeRE-only workloads.
+This comparison records the audit before compilation performance workloads
+were enabled. At that point, RE2/J 1.8 supported 266 workloads. Each SafeRE
+0.11.0 mode (`string`, `utf8`, and `utf8-vector`) supported the same 275
+workloads. There were 264 shared workloads, two RE2/J-only workloads, and
+eleven SafeRE-only workloads.
+
+Both runners now include compilation performance workloads. RE2/J's current
+selection and compilation exclusions are documented in
+[WORKLOADS.md](WORKLOADS.md).
 
 ## Supported only by RE2/J
 
