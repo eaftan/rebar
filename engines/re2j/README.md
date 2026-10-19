@@ -1,6 +1,7 @@
 This runner benchmarks [RE2/J], a pure Java port of RE2, as the `re2j`
 engine. It uses RE2/J's String API and [JMH], following the Maven and
-measurement setup of [the SafeRE runner PR][safere-pr].
+measurement setup of [the SafeRE runner](../safere/README.md). The runners
+are maintained separately so SafeRE can be contributed upstream independently.
 
 ## Build
 
@@ -21,7 +22,7 @@ RE2/J dependency version and the JVM name and version.
 
 ## Measurements
 
-Search measurements use JMH 1.37 `SampleTime` with one fork and one thread.
+Measurements use JMH 1.37 `SampleTime` with one fork and one thread.
 The runner maps a positive Rebar measurement time budget to one JMH measurement
 iteration of that duration. A positive warmup time budget enables one warmup
 iteration when `max-warmup-iters` is positive. Parsing, UTF-8 decoding,
@@ -40,15 +41,16 @@ Rebar isolates runner process trees and terminates them on timeout or
 interruption, so the JMH child JVM cannot continue running after its runner
 is stopped.
 
-A zero measurement budget, including `rebar measure --test`, uses the
-reference runner's direct timing loop. The `compile` model also uses this
-loop: it times only compilation and verifies the compiled pattern afterwards.
-Compilation timings are subject to JVM JIT effects, as discussed for the
-[existing Java runner](../java/README.md).
+A zero measurement budget, including `rebar measure --test`, uses this
+runner's direct timing loop and still runs any configured warmup before its
+one measurement.
+
 The runner includes 23 compatible compilation performance workloads plus
-`test/model/compile`. Like SafeRE, these report warmed compilation costs:
-each invocation parses and compiles a new pattern with `Pattern.compile`,
-and match-count verification runs outside the measured interval. Unsupported
+`test/model/compile`. Like SafeRE, compilation uses a separate JMH benchmark
+method that returns the result of `Pattern.compile` for JMH to consume.
+Match-count verification runs in the parent process and the fork's setup,
+outside the measured method. These measurements report warmed compilation
+costs; each invocation parses and compiles a new pattern. Unsupported
 syntax, multi-pattern inputs, and incompatible search semantics remain
 excluded; see [WORKLOADS.md](WORKLOADS.md).
 
@@ -89,4 +91,3 @@ semantics are excluded based on the full correctness sweep; see
 
 [RE2/J]: https://github.com/google/re2j
 [JMH]: https://github.com/openjdk/jmh
-[safere-pr]: https://github.com/eaftan/rebar/pull/1

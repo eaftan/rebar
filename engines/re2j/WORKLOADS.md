@@ -26,9 +26,10 @@ Compilation performance workloads were initially removed under the older JVM
 measurement policy. The 23 compatible workloads are now enabled, following
 SafeRE's inclusion of compilation benchmarks. The selection is 289 workloads:
 265 search workloads, 23 compilation performance workloads, and the basic
-`test/model/compile` correctness check. Compilation uses the direct timing
-loop and verifies matches outside the measured interval; these are warmed JVM
-compilation costs, as described in [README.md](README.md).
+`test/model/compile` correctness check. Compilation uses a separate JMH
+benchmark method and verifies matches outside that method; these are warmed
+JVM compilation costs, as described in [README.md](README.md). Zero-budget
+correctness checks use the direct loop, following SafeRE.
 
 Three additional compilation workloads in `reported/p893-hir-case-folding`
 remain restricted to `rust/regex/hir`: they benchmark Rust's AST-to-HIR
@@ -65,6 +66,13 @@ compilation workloads passed `rebar measure -e '^re2j$' -m '^compile$' --test`.
 Positive-budget measurements used 100ms measurement and warmup budgets,
 at most five reported samples, and a 60-second timeout to accommodate the
 large dictionary workload's compilation and untimed verification search.
+
+After aligning the measurement path with SafeRE, Maven clean/verify passed
+all ten RE2/J tests, including fresh-pattern and fork count-verification tests.
+All 24 compilation workloads passed both zero-budget correctness checks and
+JMH measurements with the same 100ms budgets, five-sample limit, and 60-second
+timeout. All five basic search models and regex-redux also passed short
+positive-budget JMH measurements.
 
 ## Incompatible workloads
 
